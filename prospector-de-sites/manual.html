@@ -31,7 +31,7 @@
 <body>
 <div class="wrap">
   <h1>📘 Manual — Prospector de Sites</h1>
-  <div class="versao">Versão 0.12.0</div>
+  <div class="versao">Versão 0.14.0</div>
   <p>Este plugin acha clientes com sites ruins no Google Maps, refaz as páginas com padrão profissional, publica na sua hospedagem e envia a proposta — e você administra tudo num painel (CRM) que roda no seu computador, de graça.</p>
 
   <div class="toc">
@@ -41,7 +41,7 @@
     <a href="#ciclo">3. O ciclo completo</a> ·
     <a href="#publicacao">4. Publicação automática (sem login!)</a> ·
     <a href="#dashboard">5. O dashboard (CRM)</a> ·
-    <a href="#faq">6. Problemas comuns</a>
+    <a href="#mac">6. E no Mac?</a> · <a href="#faq">7. Problemas comuns</a>
   </div>
 
   <h2 id="requisitos">1. O que você precisa antes</h2>
@@ -100,7 +100,10 @@
     <li><b>Configurações</b> — seus dados de contratante + conexão HostGator com a senha (preencha uma vez; a senha nunca passa pelo chat).</li>
   </ul>
 
-  <h2 id="faq">6. Problemas comuns</h2>
+  <h2 id="mac">6. E no Mac?</h2>
+  <p>Tudo funciona igual — só mudam os arquivos de clique duplo: <code>iniciar-dashboard.command</code> (painel), <code>publicar-agora.command</code> (publicação manual) e <code>instalar-publicador.command</code> (publicador automático via launchd, uma vez só). O /setup entrega os arquivos certos pro seu sistema.</p>
+  <div class="box dica">💡 Na primeira abertura o macOS pode bloquear por segurança: clique com o botão direito no arquivo → <b>Abrir</b> → Abrir. Só na primeira vez. Python 3: se não tiver, <code>brew install python3</code> ou python.org.</div>
+  <h2 id="faq">7. Problemas comuns</h2>
   <h3>O comparador não apareceu depois do /redesenhar</h3>
   <p>Peça: "gere o comparar.html e atualize o dashboard". A partir da v0.11.1 a entrega é travada e ele sempre vem — e também fica na aba <b>Comparador</b> do dashboard.</p>
   <h3>Pede login no cPanel toda hora</h3>
