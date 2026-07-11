@@ -8,7 +8,7 @@ description: Esta skill deve ser usada para criar e ATUALIZAR o dashboard de lea
 Arquitetura na RAIZ da pasta conectada:
 
 - **`prospector.db`** — banco SQLite, a FONTE DA VERDADE dos leads.
-- **`dashboard-server.py` + `iniciar-dashboard.bat`** — mini-servidor local (Python padrão, sem dependências). O usuário dá duplo clique no .bat → abre `http://localhost:8765` com o painel completo: editar, excluir e arrastar cards salvam direto no banco.
+- **`dashboard-server.py` + `iniciar-dashboard.bat` (Windows) / `iniciar-dashboard.command` (Mac)`** — mini-servidor local (Python padrão, sem dependências). O usuário dá duplo clique no .bat → abre `http://localhost:8765` com o painel completo: editar, excluir e arrastar cards salvam direto no banco.
 - **`dashboard.html`** — a página do painel (gerada do template). Servida pelo servidor (modo banco) ou aberta por duplo clique (modo arquivo: só leitura + edições presas ao navegador). O badge no topo indica o modo.
 
 ## Setup (uma vez, no /setup ou no primeiro uso)
