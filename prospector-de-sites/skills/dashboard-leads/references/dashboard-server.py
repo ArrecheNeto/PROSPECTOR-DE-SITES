@@ -62,10 +62,10 @@ class App(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.split('?')[0] == '/api/config':
             cfg = ler_config()
-            hg = dict(cfg.get('hostgator', {}))
-            hg['senhaDefinida'] = bool(hg.get('senha'))
-            hg.pop('senha', None)  # a senha NUNCA sai do arquivo
-            return self._json(200, {'contratante': cfg.get('contratante', {}), 'hostgator': hg})
+            cf = dict(cfg.get('cloudflare', {}))
+            cf['tokenDefinido'] = bool(cf.get('apiToken'))
+            cf.pop('apiToken', None)  # o token NUNCA sai do arquivo
+            return self._json(200, {'contratante': cfg.get('contratante', {}), 'cloudflare': cf})
         if self.path.split('?')[0] == '/api/leads':
             c = conexao(); c.row_factory = sqlite3.Row
             rows = [dict(r) for r in c.execute('SELECT * FROM leads').fetchall()]; c.close()
@@ -75,26 +75,32 @@ class App(SimpleHTTPRequestHandler):
         return SimpleHTTPRequestHandler.do_GET(self)
     def do_POST(self):
         if self.path.split('?')[0] == '/api/leads':
-            l = self._corpo(); c = conexao()
-            c.execute('INSERT OR REPLACE INTO leads (%s) VALUES (%s)' % (','.join(CAMPOS), ','.join('?'*len(CAMPOS))),
-                      [l.get(k) for k in CAMPOS])
+            l = self._corpo()
+            if not l.get('slug'): return self._json(400, {'erro': 'slug obrigatório'})
+            # upsert: só atualiza os campos presentes no payload (REPLACE apagaria os demais)
+            presentes = [k for k in CAMPOS if k in l]
+            sets = ','.join('%s=excluded.%s' % (k, k) for k in presentes if k != 'slug')
+            sql = 'INSERT INTO leads (%s) VALUES (%s) ON CONFLICT(slug) DO UPDATE SET %s, atualizado=datetime(\'now\',\'localtime\')' % (
+                ','.join(presentes), ','.join('?'*len(presentes)), sets or 'slug=excluded.slug')
+            c = conexao()
+            c.execute(sql, [l.get(k) for k in presentes])
             c.commit(); c.close(); return self._json(200, {'ok': True})
         return self._json(404, {'erro': 'rota'})
     def do_PUT(self):
         if self.path.split('?')[0] == '/api/config':
             cfg = ler_config(); corpo = self._corpo()
-            if 'contratante' in corpo or 'hostgator' in corpo:
+            if 'contratante' in corpo or 'cloudflare' in corpo:
                 if 'contratante' in corpo:
                     ct = cfg.get('contratante', {})
                     ct.update({k: v for k, v in corpo['contratante'].items() if isinstance(v, str)})
                     cfg['contratante'] = ct
-                if 'hostgator' in corpo:
-                    hg = cfg.get('hostgator', {})
-                    for k, v in corpo['hostgator'].items():
+                if 'cloudflare' in corpo:
+                    cf = cfg.get('cloudflare', {})
+                    for k, v in corpo['cloudflare'].items():
                         if not isinstance(v, str): continue
-                        if k == 'senha' and v == '': continue  # em branco = mantém a atual
-                        hg[k] = v
-                    cfg['hostgator'] = hg
+                        if k == 'apiToken' and v == '': continue  # em branco = mantém o atual
+                        cf[k] = v
+                    cfg['cloudflare'] = cf
             else:  # compatibilidade: corpo plano = contratante
                 ct = cfg.get('contratante', {})
                 ct.update({k: v for k, v in corpo.items() if isinstance(v, str)})

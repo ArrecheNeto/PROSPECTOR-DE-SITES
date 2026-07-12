@@ -16,7 +16,8 @@ Criar uma NOVA VERSÃO da página do cliente — não uma página nova. O client
 5. **Arquivo único.** `sites/[slug]/[slug].html` autocontido: CSS inline no `<head>`, sem build, sem dependências além de Google Fonts.
 6. **Responsividade TOTAL (inegociável).** A página será vista no celular do cliente E dentro da moldura da página-capa (~1000-1500px). Ela deve ser perfeita em QUALQUER largura: 360, 375, 768, 1024, 1280 e 1440px — sem rolagem horizontal, sem texto vazando, sem imagem esticada, sem seção quebrada em nenhum desses pontos. Usar grid/flex fluidos, `clamp()` para tipografia e breakpoints testados um a um. Página que quebra em alguma largura NÃO é entregue.
 7. **Editor sempre.** Todo redesign gera junto o `sites/[slug]/[slug]-editor.html` (camada de edição de `references/editor-visual.md`) — nunca entregar página sem a versão editável.
-8. **Comparador sempre.** Todo lote de redesign termina com `comparar.html` na raiz da pasta conectada, gerado a partir de `references/comparador-template.html` (substituir `__CLIENTES__` pelo array JSON; mesclar com clientes já existentes). A entrega padrão de cada cliente são 3 arquivos: página + editor + aba no comparador.
+8. **Anti-slop obrigatório.** Antes de escrever o HTML, leia `references/anti-slop.md` desta skill e aplique TODAS as proibições (visuais, de texto e de ritmo de layout). A página não pode ter cara de gerada por IA: nada de texto em gradiente, cards idênticos, kicker CAPS em toda seção, travessões no texto, verbos de slop. Duas páginas do mesmo lote nunca podem parecer o mesmo template com cores trocadas.
+9. **Comparador sempre.** Todo lote de redesign termina com `comparar.html` na raiz da pasta conectada, gerado a partir de `references/comparador-template.html` (substituir `__CLIENTES__` pelo array JSON; mesclar com clientes já existentes). A entrega padrão de cada cliente são 3 arquivos: página + editor + aba no comparador.
 
 ## Estrutura da página (adaptar à profissão)
 
@@ -46,9 +47,9 @@ A página pronta deve parecer feita por um estúdio de design — teste honesto:
 
 ## Padrão estético
 
-- Tipografia: uma serifada elegante para títulos (Playfair Display, Fraunces, Lora) + uma sans limpa para corpo (Inter, Sora, DM Sans), pesos 400/600. Hierarquia forte: h1 ≥ 40px desktop / 30px mobile.
+- Tipografia: uma serifada elegante para títulos (Playfair Display, Fraunces, Lora, Libre Caslon, Newsreader) + uma sans limpa para corpo (Inter, Sora, DM Sans, Albert Sans), pesos 400/600 — VARIANDO a dupla entre clientes do mesmo lote (ver anti-slop.md). Hierarquia forte: h1 ≥ 40px desktop / 30px mobile.
 - Espaçamento generoso: seções com 80-120px de respiro vertical desktop; nada encostado.
-- Paleta: 1 cor da marca + neutros quentes + 1 tom de destaque para CTA. Contraste AA no mínimo.
+- Paleta: 1 cor da marca + neutros tingidos do matiz da marca (nunca cinza puro, nunca bege "quente por padrão") + 1 tom de destaque para CTA. Contraste AA no mínimo.
 - Botão de WhatsApp flutuante fixo no canto inferior direito.
 - Micro-toques premium: bordas 12-16px, sombras suaves, transições de 0.2s em hovers. Sem carrosséis, sem animações pesadas, sem JS além do essencial.
 - Velocidade: página deve abrir instantânea — sem bibliotecas, sem fontes além de 2 famílias.
@@ -62,6 +63,7 @@ A página pronta deve parecer feita por um estúdio de design — teste honesto:
 - [ ] Título e meta description preenchidos com nome + especialidade + cidade
 - [ ] Comparação com o original: todo conteúdo importante do site antigo está presente
 - [ ] Logo e fotos ORIGINAIS do cliente presentes na página nova
+- [ ] Checagem anti-slop de `references/anti-slop.md` passou item a item (zero travessões, kickers racionados, sem cards idênticos, sem 3 seções no mesmo esquema, CTA com rótulo único, página distinta das demais do lote)
 - [ ] `[slug]-editor.html` gerado e `comparar.html` atualizado
 
 ## Editor visual e comparador
