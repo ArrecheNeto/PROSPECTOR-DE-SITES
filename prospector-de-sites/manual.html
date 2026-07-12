@@ -31,7 +31,7 @@
 <body>
 <div class="wrap">
   <h1>📘 Manual — Prospector de Sites</h1>
-  <div class="versao">Versão 0.15.0</div>
+  <div class="versao">Versão 0.16.0</div>
   <p>Este plugin acha clientes com sites ruins no Google Maps, refaz as páginas com padrão profissional, publica na sua hospedagem e envia a proposta — e você administra tudo num painel (CRM) que roda no seu computador, de graça.</p>
 
   <div class="toc">
@@ -48,7 +48,7 @@
   <ul>
     <li><b>Claude Cowork</b> (app do Claude pra desktop) com este plugin instalado.</li>
     <li><b>Extensão Claude in Chrome</b> conectada — é ela que navega no Google Maps.</li>
-    <li><b>Conector do Gmail</b> ativo (Configurações → Conectores) — rascunhos de proposta e leitura de respostas.</li>
+    <li><b>E-mail para as propostas</b>: conector do Gmail ativo (Configurações → Conectores) OU uma conta do iCloud Mail — inclusive e-mail profissional com domínio próprio via iCloud+ (ex.: contato@seudominio.com). No iCloud, o Claude usa o icloud.com/mail pelo navegador: você faz o login uma vez, nenhuma senha entra no chat.</li>
     <li><b>Conector do Google Drive</b> — planilha de leads no Google Sheets.</li>
     <li><b>Conta no Cloudflare</b> (grátis — dash.cloudflare.com, não precisa de domínio nem cartão). As páginas vão pro Cloudflare Pages com HTTPS automático.</li>
     <li><b>Uma pasta conectada no Cowork</b> (ex.: "Clientes") — tudo fica salvo nela.</li>
@@ -69,10 +69,10 @@
     <tr><td><span class="cmd">/redesenhar</span></td><td>Recria as páginas dos melhores leads (5+ por lote) mantendo conteúdo, fotos e logo REAIS. Entrega: página + editor visual + comparador antes/depois.</td></tr>
     <tr><td><span class="cmd">/editor</span></td><td>Quer mexer em texto ou foto? Abre a versão editável no navegador — clica, edita, exporta.</td></tr>
     <tr><td><span class="cmd">/publicar</span></td><td>Sobe página + capa de apresentação no Cloudflare Pages (HTTPS automático) e confere as URLs.</td></tr>
-    <tr><td><span class="cmd">/proposta</span></td><td>Escreve o e-mail (elogio real + defeito objetivo + link da capa), passa na checklist anti-spam e deixa o rascunho no Gmail.</td></tr>
-    <tr><td><span class="cmd">/respostas</span></td><td>Lê o Gmail e move sozinho no painel quem respondeu. Dica: peça pro Claude agendar todo dia às 9h.</td></tr>
+    <tr><td><span class="cmd">/proposta</span></td><td>Escreve o e-mail (elogio real + defeito objetivo + link da capa), passa na checklist anti-spam e deixa o rascunho no seu e-mail (Gmail ou iCloud).</td></tr>
+    <tr><td><span class="cmd">/respostas</span></td><td>Lê seu e-mail (Gmail ou iCloud) e move sozinho no painel quem respondeu. Dica: peça pro Claude agendar todo dia às 9h.</td></tr>
     <tr><td><span class="cmd">/followup</span></td><td>3+ dias sem resposta? Gera o lembrete gentil (1 por cliente, nunca repete).</td></tr>
-    <tr><td><span class="cmd">/contrato</span></td><td>Fechou? Gera o contrato em folha imprimível + Word travado (cliente só preenche onde você deixou) e o rascunho no Gmail.</td></tr>
+    <tr><td><span class="cmd">/contrato</span></td><td>Fechou? Gera o contrato em folha imprimível + Word travado (cliente só preenche onde você deixou) e o rascunho no seu e-mail.</td></tr>
   </table>
   <div class="box aviso">⚠️ A regra de ouro do redesign: <b>nada é inventado</b>. Serviços, credenciais e fotos vêm do site real do cliente. O texto é reescrito com técnica — dizendo a mesma verdade.</div>
 

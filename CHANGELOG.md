@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.16.0 — 2026-07-12
+
+### E-mail: suporte a iCloud Mail (inclusive domínio próprio via iCloud+)
+
+- Novo campo `envio.provedor` no config (`gmail` | `icloud`) + `envio.endereco`, coletados no `/setup`.
+- Provedor `icloud`: rascunhos, envio e leitura de respostas pelo icloud.com/mail via Claude in Chrome — o usuário faz o próprio login, nenhuma senha ou código entra no chat/config (não há conector do iCloud e a rede do sandbox não alcança IMAP/SMTP).
+- `/proposta`, `/followup`, `/respostas` e `/contrato` ficaram agnósticos de provedor; a checklist anti-spam ganhou tratamento por provedor (o embrulho de link em redirect é específico do Gmail) e a regra de remetente agora cobre domínio próprio com SPF/DKIM (recomendação de DMARC incluída).
+- Conferência obrigatória do campo "De" nos rascunhos do iCloud (alias profissional, não o @icloud.com pessoal).
+
 ## 0.15.0 — 2026-07-12
 
 ### Hospedagem: HostGator → Cloudflare Pages

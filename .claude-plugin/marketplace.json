@@ -5,17 +5,26 @@
   },
   "metadata": {
     "description": "Plugins de IA para negócios",
-    "version": "0.15.0"
+    "version": "0.16.0"
   },
   "plugins": [
     {
       "name": "prospector-de-sites",
       "source": "./prospector-de-sites",
-      "description": "Prospecção semi-automática com CRM local: encontra negócios bem avaliados com sites ruins no Google Maps, redesenha as páginas com estética premium e regras anti-AI-slop (editor visual + comparador antes/depois), publica no Cloudflare Pages sozinho (HTTPS automático), envia proposta anti-spam com página-capa personalizada via Gmail, faz follow-up, lê as respostas e gera contrato em Word travado — tudo administrado num dashboard local com kanban e financeiro. Comece pelo /setup.",
+      "description": "Prospecção semi-automática com CRM local: encontra negócios bem avaliados com sites ruins no Google Maps, redesenha as páginas com estética premium e regras anti-AI-slop (editor visual + comparador antes/depois), publica no Cloudflare Pages sozinho (HTTPS automático), envia proposta anti-spam com página-capa personalizada via Gmail ou iCloud Mail, faz follow-up, lê as respostas e gera contrato em Word travado — tudo administrado num dashboard local com kanban e financeiro. Comece pelo /setup.",
       "author": {
         "name": "Helio Arreche"
       },
-      "keywords": ["prospeccao", "landing-page", "redesign", "cloudflare", "google-maps", "gmail", "crm", "dashboard"]
+      "keywords": [
+        "prospeccao",
+        "landing-page",
+        "redesign",
+        "cloudflare",
+        "google-maps",
+        "gmail",
+        "crm",
+        "dashboard"
+      ]
     }
   ]
 }

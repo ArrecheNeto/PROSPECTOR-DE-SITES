@@ -1,5 +1,5 @@
 ---
-description: Gera o contrato de prestação de serviço do cliente que fechou e deixa o rascunho no Gmail
+description: Gera o contrato de prestação de serviço do cliente que fechou e deixa o rascunho no e-mail
 argument-hint: "[nome do cliente]"
 ---
 
@@ -13,7 +13,7 @@ Gere o contrato de um cliente fechado seguindo a skill `contrato-servico`.
 4. Gere as DUAS versões do contrato:
    - **HTML** (folha ao vivo do dashboard): a partir de `references/contrato-template.html` (substitua TODOS os `{{...}}`). Salve em `sites/[slug]/contrato-[slug].html`.
    - **DOCX travado** (o que vai pro cliente): monte um `dados.json` com as mesmas chaves + `MANUTENCAO`/`VALOR_MANUTENCAO` e rode `python3 references/gerar-docx.py dados.json sites/[slug]/contrato-[slug].docx` (skill `contrato-servico`; instale `python-docx` com `pip install python-docx --break-system-packages` se preciso). O documento sai SOMENTE LEITURA com regiões editáveis destacadas em amarelo — o cliente só consegue preencher CPF/endereço (se faltarem), data e assinatura. Campos que você já tiver ficam fixos.
-5. Crie o rascunho no Gmail via conector para o e-mail do cliente: assunto "Contrato de prestação de serviço — [serviço]", corpo curto e cordial (skill tem o modelo) orientando: ler, preencher os campos destacados e devolver respondendo o e-mail. TENTE anexar o `.docx` pelo conector (campo `attachments`, base64); se o conector recusar anexos, informe o caminho do arquivo pro usuário anexar manualmente antes de enviar.
+5. Crie o rascunho no provedor do config (`envio.provedor`) para o e-mail do cliente: assunto "Contrato de prestação de serviço — [serviço]", corpo curto e cordial (skill tem o modelo) orientando: ler, preencher os campos destacados e devolver respondendo o e-mail. Anexo do `.docx`: no **gmail**, TENTE pelo conector (campo `attachments`, base64); no **icloud** (navegador) ou se o conector recusar, informe o caminho do arquivo pro usuário anexar manualmente antes de enviar.
 6. Atualize o banco/dashboard (skill `dashboard-leads`): `contratoStatus='enviado'`, `contratoEm=[data de hoje]`, `manutencao=[valor mensal, se contratada]`. Quando o usuário contar que o cliente assinou, atualize `contratoStatus='assinado'`; quando contar que recebeu o pagamento, `pago=1`. Esses campos alimentam as vistas Contratos e Financeiro do dashboard.
 
 ## Devolução assinada

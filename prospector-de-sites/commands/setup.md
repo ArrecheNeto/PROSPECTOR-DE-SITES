@@ -20,7 +20,10 @@ Colete:
 - **Nichos padrão de prospecção**: sugira nutricionistas, psicólogos, advogados e psiquiatras como ponto de partida, mas deixe o usuário editar livremente.
 - **Cidade/região padrão**.
 - **Leads qualificados por busca**: padrão 10.
-- **Modo de envio da proposta**: padrão "criar rascunho no Gmail para revisão" (recomendado). Alternativa: enviar direto.
+- **E-mail de envio das propostas**: qual provedor e endereço o usuário usa —
+  - `gmail` (conector do Gmail — verifique se está ativo em Configurações → Conectores), ou
+  - `icloud` (iCloud Mail, inclusive domínio próprio via iCloud+, ex. `contato@seudominio.com` — funciona pelo icloud.com/mail via Claude in Chrome, sem conector e sem senha no config; peça o endereço exato que aparece no campo "De").
+- **Modo de envio**: padrão "criar rascunho para revisão" (recomendado). Alternativa: enviar direto.
 
 ## 4. Conexão com o Cloudflare
 
@@ -42,7 +45,7 @@ Salve tudo em `prospector-config.json` na pasta conectada, neste formato:
 {
   "assinatura": { "nome": "", "apresentacao": "", "whatsapp": "" },
   "prospeccao": { "nichos": ["nutricionistas", "psicologos", "advogados", "psiquiatras"], "cidade": "", "leadsPorBusca": 10 },
-  "envio": { "modo": "rascunho" },
+  "envio": { "modo": "rascunho", "provedor": "gmail", "endereco": "" },
   "cloudflare": { "accountId": "", "apiToken": "", "projeto": "prospector", "dominio": "" }
 }
 ```

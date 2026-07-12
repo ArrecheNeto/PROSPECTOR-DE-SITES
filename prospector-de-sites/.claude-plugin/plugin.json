@@ -1,7 +1,7 @@
 {
   "name": "prospector-de-sites",
-  "version": "0.15.0",
-  "description": "COMECE PELO /setup (2 min, uma vez só). Prospecção semi-automática de clientes: encontra negócios bem avaliados com sites ruins no Google Maps, redesenha as páginas com estética premium e regras anti-AI-slop, publica no Cloudflare Pages (com página-capa antes/depois e HTTPS automático) e envia proposta anti-spam por e-mail via Gmail, com follow-up automático. Leads em planilha do Google Sheets e dashboard local (kanban, contratos e financeiro).",
+  "version": "0.16.0",
+  "description": "COMECE PELO /setup (2 min, uma vez só). Prospecção semi-automática de clientes: encontra negócios bem avaliados com sites ruins no Google Maps, redesenha as páginas com estética premium e regras anti-AI-slop, publica no Cloudflare Pages (com página-capa antes/depois e HTTPS automático) e envia proposta anti-spam por e-mail (Gmail ou iCloud Mail, inclusive domínio próprio), com follow-up automático. Leads em planilha do Google Sheets e dashboard local (kanban, contratos e financeiro).",
   "author": {
     "name": "Helio Arreche"
   },

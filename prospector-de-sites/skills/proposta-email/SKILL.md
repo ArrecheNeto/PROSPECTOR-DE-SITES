@@ -31,20 +31,28 @@ Revise o e-mail pronto contra CADA item; se falhar em qualquer um, reescreva ant
 
 - [ ] **1 link só** (a página-capa). Dois links no máximo se incluir o site antigo — nunca mais que isso.
 - [ ] **Sem encurtador de URL** (bit.ly e afins = spam na certa). O link é o domínio real, com `https://`.
-- [ ] **Link como âncora HTML com texto visível limpo.** O Gmail embrulha TODO link em um redirect próprio (`google.com/url?q=...`) ao salvar — não dá pra impedir, e em corpo de texto puro o embrulho fica VISÍVEL, o que parece golpe. Por isso o rascunho é criado com corpo HTML e o link como âncora: `<a href="https://[urlBase]/[slug]/proposta.html">https://[urlBase]/[slug]/proposta.html</a>` — texto visível = a URL limpa montada a partir do config (nunca copiada de outro e-mail). O redirect do Google fica só no href invisível, como em qualquer e-mail do Gmail. Depois de criar, confira o rascunho: o texto visível deve começar em `https://[urlBase do config]`.
+- [ ] **Link com texto visível limpo.** O texto visível do link deve ser a URL real montada a partir do config (nunca copiada de outro e-mail). No **Gmail** (conector): o Gmail embrulha todo link em redirect próprio (`google.com/url?q=...`) ao salvar — não dá pra impedir, e em texto puro o embrulho fica VISÍVEL, o que parece golpe; por isso o rascunho é criado com corpo HTML e o link como âncora `<a href="https://[urlBase]/[slug]/proposta.html">https://[urlBase]/[slug]/proposta.html</a>` (o redirect fica só no href invisível). No **iCloud Mail** (via navegador): não há embrulho — cole a URL limpa como texto mesmo (o Mail a torna clicável). Depois de criar, confira o rascunho: o texto visível deve começar em `https://[urlBase do config]`.
 - [ ] **Domínio limpo e humano.** `[projeto].pages.dev` é apresentável (curto, HTTPS, sem números aleatórios) desde que o nome do projeto seja limpo — `prospector.pages.dev` passa; `site-x9k2j1.pages.dev` não. Se o nome do projeto parecer técnico/aleatório, oriente a renomear o projeto ou conectar um domínio próprio (registro.br → Cloudflare Pages → Custom domains) e atualizar o campo `dominio` nas Configurações do dashboard. Proposta só sai com URL apresentável.
 - [ ] **Sem palavras-gatilho**: grátis, promoção, imperdível, oferta, desconto, clique aqui, 100%, garantido, urgente.
 - [ ] **Sem CAIXA ALTA no assunto, sem "!!", sem emoji** no assunto.
 - [ ] **Texto simples** — corpo HTML minimalista (só parágrafos e a âncora do link; zero cores, botões, imagens ou anexos) (anexo de desconhecido aumenta score de spam E medo de abrir; a capa no link substitui o preview).
 - [ ] **Assunto ≤ 60 caracteres**, formulado como pergunta ou frase pessoal com o nome do negócio.
 - [ ] **Primeira linha 100% personalizada** (nome + fato real das avaliações) — filtros de spam e humanos reconhecem template genérico.
-- [ ] **Remetente = conta Gmail pessoal ativa do usuário** (já tem SPF/DKIM do Google). Nunca sugerir disparo em massa: os envios são 1 a 1, poucos por dia — padrão humano.
+- [ ] **Remetente = conta de e-mail real e ativa do usuário, com SPF/DKIM válidos.** Gmail já tem (Google assina tudo). Domínio próprio no iCloud (iCloud+ Custom Email Domain) também: a Apple exige os registros SPF/DKIM na configuração do domínio — se o usuário recebe e envia normalmente por ele, está assinado (recomende adicionar também um registro DMARC no DNS, ex. `v=DMARC1; p=none`, melhora a entrega). Domínio próprio como remetente passa MAIS credibilidade que @gmail.com em proposta comercial. Nunca sugerir disparo em massa: os envios são 1 a 1, poucos por dia — padrão humano.
 
-## Envio
+## Envio (conforme `envio.provedor` do config)
 
-- Modo **rascunho** (padrão): criar via conector do Gmail (`create_draft`) com destinatário, assunto e corpo prontos. Avisar o usuário para revisar antes de enviar.
+**Provedor `gmail`** (conector do Gmail):
+- Modo **rascunho** (padrão): criar via conector (`create_draft`) com destinatário, assunto e corpo prontos. Avisar o usuário para revisar antes de enviar.
 - Modo **enviar direto**: se o conector não suportar envio, abrir o Gmail web via Claude in Chrome, ou criar o rascunho e avisar.
-- Nunca enviar para lead sem e-mail confirmado; nesses casos, sugerir contato via WhatsApp com a mesma mensagem adaptada.
+
+**Provedor `icloud`** (iCloud Mail — inclui domínio próprio via iCloud+; NÃO há conector nem acesso IMAP do sandbox — tudo pelo navegador):
+- Abra `https://www.icloud.com/mail` via Claude in Chrome. Se pedir login, o USUÁRIO faz o login dele (nunca peça senha/código no chat) — a sessão costuma persistir nas próximas vezes.
+- Modo **rascunho** (padrão): clique em novo e-mail, preencha destinatário, assunto e corpo (o remetente deve ser o endereço do config, ex. selecionando o alias certo no campo "De"), e feche/salve — o iCloud salva em Rascunhos automaticamente. Avise o usuário para revisar na pasta Rascunhos (Mail do Mac, iPhone ou icloud.com) antes de enviar.
+- Modo **enviar direto**: mesmo fluxo, clicando em enviar ao final.
+- Confira o campo "De" em TODO e-mail: precisa ser o endereço profissional do config, não o @icloud.com pessoal.
+
+Em ambos: nunca enviar para lead sem e-mail confirmado; nesses casos, sugerir contato via WhatsApp com a mesma mensagem adaptada.
 
 ## Página-capa (o que o cliente vê ao clicar)
 
@@ -52,7 +60,7 @@ O link do e-mail leva à página-capa gerada no `/publicar` (template em `refere
 
 ## Depois do envio
 
-Registrar no banco/`leads.md` (status + data) e no dashboard. As respostas são verificadas pelo comando `/respostas` (Gmail via conector) — sugira ao usuário agendar a verificação diária. Follow-up pelo `/followup` após 3+ dias úteis sem resposta (1 único follow-up por lead: curto, gentil, "conseguiu ver a página?").
+Registrar no banco/`leads.md` (status + data) e no dashboard. As respostas são verificadas pelo comando `/respostas` (Gmail via conector; iCloud pela busca do webmail via navegador) — sugira ao usuário agendar a verificação diária. Follow-up pelo `/followup` após 3+ dias úteis sem resposta (1 único follow-up por lead: curto, gentil, "conseguiu ver a página?").
 
 ## Respeito ao destinatário (LGPD e reputação)
 
