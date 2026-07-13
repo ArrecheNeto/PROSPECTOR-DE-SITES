@@ -14,6 +14,18 @@ Prospecção semi-automática de clientes com sites ruins: acha, redesenha, publ
 8. `/followup [cliente]` — 3+ dias sem resposta? Gera o follow-up gentil (1 por lead, nunca repete) já checando quem respondeu antes.
 9. `/contrato [cliente]` — cliente fechou? Gera a minuta do contrato (pronta pra PDF) com os dados do negócio e deixa o rascunho no Gmail.
 
+## Uso no Codex
+
+O Codex ativa o fluxo por linguagem natural, sem depender dos comandos `/...` do Claude. Exemplos:
+
+- “Configure meu workspace do Prospector de Sites.”
+- “Prospecte 10 restaurantes em Roma.”
+- “Redesenhe os próximos cinco leads qualificados.”
+- “Continue o pipeline usando os arquivos existentes.”
+- “Confira respostas e prepare os follow-ups elegíveis.”
+
+O Codex pede confirmação antes de publicar ou criar mensagens externas e mantém o estado nos mesmos arquivos locais usados pelo fluxo original.
+
 ## Manual e publicação automática
 
 O pacote inclui `manual.html` — o manual completo do usuário, copiado pra pasta no `/setup` e **atualizado a cada versão do plugin**. A publicação na HostGator é automática: senha preenchida uma vez no `prospector-config.json` + `publicar-agora.bat` (2 cliques) quando a rede do sandbox não alcança o FTP — sem login no cPanel.
@@ -24,9 +36,10 @@ O plugin mantém um painel de controle na sua pasta: `prospector.db` (banco SQLi
 
 ## Requisitos
 
-- Extensão Claude in Chrome conectada (prospecção no Maps e fallback de deploy)
+- Claude Cowork/Claude Code ou Codex
+- No Claude: extensão Claude in Chrome e pasta conectada no Cowork
+- No Codex: recursos de navegador, Gmail e sistema de arquivos disponíveis para as etapas correspondentes
 - Conector do Gmail (rascunhos de proposta)
-- Pasta conectada no Cowork (armazena config, leads e sites)
 - Hospedagem HostGator com acesso ao cPanel
 
 ## Onde ficam os dados

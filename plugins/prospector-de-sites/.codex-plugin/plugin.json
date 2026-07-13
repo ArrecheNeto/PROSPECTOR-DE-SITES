@@ -1,0 +1,41 @@
+{
+  "name": "prospector-de-sites",
+  "version": "0.14.0",
+  "description": "Run a tracked local-business website sales pipeline from prospecting through contracts.",
+  "author": {
+    "name": "Helio Arreche"
+  },
+  "repository": "https://github.com/ArrecheNeto/PROSPECTOR-DE-SITES",
+  "keywords": [
+    "prospeccao",
+    "landing-page",
+    "redesign",
+    "hostgator",
+    "google-maps",
+    "gmail",
+    "crm"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Prospector de Sites",
+    "shortDescription": "Run a complete website-prospecting and client pipeline.",
+    "longDescription": "Qualify leads, create factual HTML redesigns, manage a local dashboard, publish proposal covers and sites, track Gmail replies and follow-ups, and prepare reviewed service contracts.",
+    "developerName": "Helio Arreche",
+    "category": "Productivity",
+    "capabilities": [
+      "Google Maps lead qualification",
+      "Premium single-file HTML redesign",
+      "Browser visual editor and comparison page",
+      "HostGator publication",
+      "Gmail proposal drafting",
+      "Local SQLite lead dashboard",
+      "Gmail response and follow-up tracking",
+      "Service contract HTML and DOCX drafts"
+    ],
+    "defaultPrompt": [
+      "Configure my Prospector de Sites workspace.",
+      "Find and qualify website redesign leads.",
+      "Continue my website prospecting pipeline."
+    ]
+  }
+}

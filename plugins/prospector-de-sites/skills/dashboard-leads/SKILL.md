@@ -44,7 +44,9 @@ c.commit()
 EOF
 ```
    - `/prospectar` → insere leads (`novo`) e descartados (`descartado`, motivo em `obs`). NUNCA sobrescreva um lead cujo status já avançou.
-   - `/redesenhar` → `status='redesenhado'` · `/publicar` → `status='publicado'`, `urlNova` · `/proposta` → `status='proposta'`, `dataProposta`.
+   - `/redesenhar` → `status='redesenhado'` · `/publicar` → `status='publicado'`, `urlNova`.
+   - **Draft creation:** keep status `publicado` (or prior state), append one structured `[prospector:gmail-draft]` JSON marker to `obs`, and do not set `dataProposta` or status `proposta`. Preserve marker fields `draftId` when available, `recipient`, `subject`, `createdAt`, and `active`; preserve optional `threadId`/`messageId`. Never remove or duplicate an active marker while updating ordinary notes.
+   - **Gmail Sent confirmation:** set status `proposta` and `dataProposta` to the actual sent date only after Gmail Sent confirms the original proposal was sent.
    - Usuário conta que respondeu/fechou → `status='respondeu'|'fechado'`, `valor` (+ `manutencao` se houver mensalidade).
    - `/contrato` → `contratoStatus='enviado'` + `contratoEm`. Cliente assinou → `contratoStatus='assinado'`. Pagamento recebido → `pago=1`.
 2. **Regenerar o snapshot**: leia todos os leads do banco e regrave `dashboard.html` do template com o JSON embutido atualizado (`{"atualizado": "...", "leads": [...]}`) — é o fallback para quem abre sem servidor.
@@ -53,4 +55,4 @@ Se o banco não existir ainda (usuário antigo), crie-o e importe os leads do sn
 
 ## O que o painel faz sozinho (não reimplementar)
 
-Kanban drag & drop, edição em modal, exclusão, busca, paginação automática, funil, follow-ups (proposta 4+ dias), receita fechada/potencial, vista Contratos (status pendente/enviado/assinado + link do documento + pago) e vista Financeiro (recebido, a receber, MRR de manutenções, projeção 12 meses) — tudo no template. O plugin só mantém o BANCO correto e o snapshot em dia.
+Kanban drag & drop, edição em modal, exclusão, busca, paginação automática, funil, follow-ups (proposta enviada 4+ dias), receita fechada/potencial, vista Contratos (status pendente/enviado/assinado + link do documento + pago) e vista Financeiro (recebido, a receber, MRR de manutenções, projeção 12 meses) — tudo no template. Drag/drop e modal bloqueiam transição manual para `proposta`, pois o dashboard não consegue confirmar Gmail Sent; o modal pode exibir e manter `proposta` somente para um lead que já chegou nesse estado pelo fluxo confirmado. O plugin só mantém o BANCO correto e o snapshot em dia.

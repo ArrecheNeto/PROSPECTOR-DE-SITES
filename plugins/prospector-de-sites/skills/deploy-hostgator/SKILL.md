@@ -9,7 +9,13 @@ Publicar páginas em `public_html/[pastaBase]/[slug]/` e garantir a URL pública
 
 ## Credenciais
 
-Tudo vem de `prospector-config.json` (bloco `hostgator`): `usuario`, `dominio`, `servidor`, `senha`, `pastaBase` (padrão `clientes`). **A senha vive SÓ nesse arquivo, no computador do usuário — nunca é digitada no chat, nunca é exibida em nenhuma saída, log ou comando mostrado ao usuário.** Se a senha estiver vazia, oriente o usuário: dashboard → aba Configurações → Conexão HostGator → colar a senha e salvar (ou editar o arquivo na mão). Nunca pelo chat.
+Tudo vem de `prospector-config.json` (bloco `hostgator`): `usuario`, `dominio`, `servidor`, `senha`, `pastaBase` (padrão `clientes`). **A senha vive SÓ nesse arquivo, no computador do usuário — nunca é digitada no chat, nunca é exibida em nenhuma saída, log ou argumento de processo.** Se a senha estiver vazia, oriente o usuário: dashboard → aba Configurações → Conexão HostGator → colar a senha e salvar (ou editar o arquivo na mão). Nunca pelo chat.
+
+Codex não deve montar comandos FTP autenticados nem transferir credenciais do config para a linha de comando. Use somente um publicador local que leia o config dentro do processo, ou uma authenticated browser session na qual o usuário faça login diretamente.
+
+## Confirmação obrigatória
+
+Require explicit confirmation immediately before publication. Preparar e revisar arquivos é permitido antes da confirmação; criar `fila-publicacao.txt`, iniciar o publicador local, fazer upload no navegador ou executar o teste de conexão publica conteúdo e exige confirmação nesse momento. Confirmações anteriores, incluindo pedido para rodar o pipeline inteiro ou `/setup`, não valem para esta etapa.
 
 ## Método 1 — Publicador automático local (RECOMENDADO: instala uma vez, nunca mais clica)
 
@@ -20,16 +26,12 @@ A rede do sandbox do Cowork NÃO alcança FTP nem cPanel — isso vale para todo
    - **Mac**: `publicar-agora.command` e `instalar-publicador.command` (o instalador registra o publicador no launchd, a cada 60s; desinstalar = `launchctl unload` do plist com.prospector.publicador).
    Em dúvida, copie todos — cada sistema ignora os do outro.
 2. **Primeira vez**: peça UM duplo clique no `instalar-publicador.bat` (Windows — cria a tarefa "ProspectorPublicador"; erro de permissão = botão direito → Executar como administrador) ou no `instalar-publicador.command` (Mac — se o macOS bloquear por segurança: botão direito → Abrir na primeira vez). Só uma vez na vida.
-3. **Monte a fila**: escreva `fila-publicacao.txt` na raiz da pasta conectada, uma linha por arquivo: `caminho/local/arquivo.html|public_html/[pastaBase]/[slug]/index.html`. Inclua página (`index.html`) e capa (`proposta.html`) de cada cliente. Em até 1 minuto o publicador sobe tudo sozinho e renomeia a fila para `fila-publicada-[data].txt` (o log fica em `publicador-log.txt`).
+3. **Após a confirmação imediata, monte a fila**: escreva `fila-publicacao.txt` na raiz da pasta conectada, uma linha por arquivo: `caminho/local/arquivo.html|public_html/[pastaBase]/[slug]/index.html`. Inclua página (`index.html`) e capa (`proposta.html`) de cada cliente. Em até 1 minuto o publicador sobe tudo sozinho e renomeia a fila para `fila-publicada-[data].txt` (o log fica em `publicador-log.txt`).
 4. **Aguarde ~90s e verifique**: confira se a fila foi renomeada e teste as URLs (verificação abaixo). Sem tarefa instalada, o fallback manual é o duplo clique no `publicar-agora.bat` (Windows) ou `publicar-agora.command` (Mac).
 
-## Método 2 — FTP direto do sandbox (tentar primeiro, silencioso)
+## Método 2 — Navegador (fallback seguro)
 
-Antes de acionar o usuário, tente publicar você mesmo: `curl -sS --connect-timeout 15 -T [arquivo] "ftp://[servidor]/public_html/[pastaBase]/[slug]/index.html" --user "[usuario]:[senha do config]" --ftp-create-dirs` (senha lida do arquivo via script — jamais mostrada). Se funcionar, ótimo: zero ação do usuário. Se a rede do sandbox bloquear (timeout/refused), caia SEM DRAMA para o Método 1 — não insista em tentativas repetidas.
-
-## Método 3 — Navegador (último recurso)
-
-Se os métodos 1 e 2 falharem (ex.: curl ausente na máquina do usuário): cPanel File Manager pelo Claude in Chrome — o USUÁRIO faz o login dele (nunca peça a senha no chat), você navega, cria as pastas e faz upload pela interface.
+Se o publicador local falhar, use o cPanel File Manager em uma sessão autenticada do navegador. O USUÁRIO faz o login diretamente na interface; nunca peça, leia ou repita a senha no chat. Peça a confirmação obrigatória imediatamente antes de iniciar o upload, então navegue, crie as pastas e envie os arquivos pela interface.
 
 ## Verificação (obrigatória, após qualquer método)
 
@@ -39,4 +41,4 @@ Se os métodos 1 e 2 falharem (ex.: curl ausente na máquina do usuário): cPane
 
 ## Teste de conexão do /setup
 
-Publique `teste.html` simples ("Funcionou!") em `public_html/[pastaBase]/teste/index.html` pelo Método 2; se bloqueado, já deixe os scripts do Método 1 copiados na pasta, monte a fila com o teste e peça os 2 cliques — assim o usuário aprende o fluxo logo no setup.
+Prepare `teste.html` simples ("Funcionou!") para `public_html/[pastaBase]/teste/index.html`. Peça confirmação imediatamente antes de publicar o teste. Depois da confirmação, use o publicador local; se bloqueado, use a sessão autenticada do navegador. Assim o usuário aprende o fluxo logo no setup sem expor credenciais.
