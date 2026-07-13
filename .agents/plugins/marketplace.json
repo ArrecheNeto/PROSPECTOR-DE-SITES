@@ -1,0 +1,20 @@
+{
+  "name": "arrecheneto-plugins",
+  "interface": {
+    "displayName": "Prospector de Sites"
+  },
+  "plugins": [
+    {
+      "name": "prospector-de-sites",
+      "source": {
+        "source": "local",
+        "path": "./prospector-de-sites"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

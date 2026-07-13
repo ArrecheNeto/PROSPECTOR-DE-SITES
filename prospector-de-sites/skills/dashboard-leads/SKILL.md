@@ -13,7 +13,7 @@ Arquitetura na RAIZ da pasta conectada:
 
 ## Setup (uma vez, no /setup ou no primeiro uso)
 
-1. Copie `references/dashboard-server.py` e `references/iniciar-dashboard.bat` desta skill para a raiz da pasta conectada.
+1. Copie `references/dashboard-server.py` e o iniciador do sistema do usuário — `references/iniciar-dashboard.bat` (Windows) ou `references/iniciar-dashboard.command` (Mac; rode `chmod +x` no arquivo copiado) — para a raiz da pasta conectada.
 2. Crie o `prospector.db` com o schema abaixo (via python3/sqlite3 no bash).
 3. Gere o `dashboard.html` a partir de `references/dashboard-template.html` substituindo `__DADOS__` pelo snapshot JSON.
 4. Diga ao usuário: "duplo clique em `iniciar-dashboard.bat` abre o painel com o banco conectado" (requer Python instalado no Windows — se não tiver, o dashboard.html funciona no modo arquivo).

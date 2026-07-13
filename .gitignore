@@ -1,0 +1,11 @@
+# artefatos de uso local — nunca versionar
+prospector-config.json
+prospector.db
+publicador-log.txt
+publicar/
+leads.md
+dashboard.html
+.DS_Store
+Thumbs.db
+node_modules/
+__pycache__/

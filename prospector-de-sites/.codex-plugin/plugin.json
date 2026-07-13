@@ -1,0 +1,19 @@
+{
+  "name": "prospector-de-sites",
+  "version": "0.20.0",
+  "description": "Prospecção semi-automática de clientes: encontra negócios bem avaliados com sites ruins, redesenha as páginas com estética premium e regras anti-AI-slop, publica no Cloudflare Pages (HTTPS automático) e escreve proposta anti-spam por e-mail, com dashboard local (kanban, contratos e financeiro). Skills autônomas, sem MCP. Comece descrevendo o que quer (ex.: prospectar nutricionistas em Campinas) ou invocando $prospeccao-maps.",
+  "skills": "./skills/",
+  "author": {
+    "name": "Helio Arreche"
+  },
+  "keywords": [
+    "prospeccao",
+    "landing-page",
+    "redesign",
+    "cloudflare",
+    "google-maps",
+    "gmail",
+    "crm",
+    "dashboard"
+  ]
+}
