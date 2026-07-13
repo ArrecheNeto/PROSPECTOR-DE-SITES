@@ -25,6 +25,19 @@ No Claude Code:
 
 No Claude Cowork (desktop): Configurações → Plugins → Adicionar marketplace → cole a URL deste repositório → instale o **prospector-de-sites**.
 
+### Usar no OpenAI Codex (CLI/IDE)
+
+As skills usam o formato SKILL.md, que o Codex também entende. Clone este repositório e rode o instalador:
+
+```
+git clone https://github.com/felipemazetti/PROSPECTOR-DE-SITES
+bash PROSPECTOR-DE-SITES/codex/instalar-codex.sh
+```
+
+Ele copia as 6 skills para `~/.agents/skills` e converte os 9 comandos em skills invocáveis (`$prospector-setup`, `$prospectar`, `$redesenhar`, `$publicar`, `$proposta`, `$respostas`, `$followup`, `$contrato`, `$editor`). Depois copie `codex/AGENTS-modelo.md` para a sua pasta de trabalho como `AGENTS.md` — ele adapta o fluxo ao Codex.
+
+**Limitações no Codex** (não existem o Claude in Chrome nem os conectores): a prospecção no Google Maps e a leitura do e-mail exigem participação manual (colar dados/respostas) ou um MCP configurado; os e-mails saem prontos em `emails-prontos/` para copiar e colar. Redesign, deploy no Cloudflare, dashboard e contratos funcionam integralmente.
+
 ## Requisitos
 
 - Claude Cowork (ou Claude Code) com extensão Claude in Chrome conectada

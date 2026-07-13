@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.17.0 — 2026-07-13
+
+### Suporte ao OpenAI Codex
+
+- Novo diretório `codex/` com instalador (`instalar-codex.sh` + `.command` para Mac): copia as 6 skills (formato SKILL.md é compatível) para `~/.agents/skills` e converte os 9 comandos em skills invocáveis (`$prospectar`, `$publicar`, `$prospector-setup` etc.), substituindo `$ARGUMENTS` por instrução em linguagem natural.
+- `codex/AGENTS-modelo.md`: contexto para a pasta de trabalho no Codex, com as adaptações obrigatórias — sem Claude in Chrome (prospecção com participação manual ou Playwright), sem conector do Gmail (e-mails prontos em `emails-prontos/` ou MCP de e-mail), deploy/dashboard/contratos funcionam integralmente.
+- README e manual com instruções e limitações.
+
 ## 0.16.0 — 2026-07-12
 
 ### E-mail: suporte a iCloud Mail (inclusive domínio próprio via iCloud+)

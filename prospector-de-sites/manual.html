@@ -31,7 +31,7 @@
 <body>
 <div class="wrap">
   <h1>📘 Manual — Prospector de Sites</h1>
-  <div class="versao">Versão 0.16.0</div>
+  <div class="versao">Versão 0.17.0</div>
   <p>Este plugin acha clientes com sites ruins no Google Maps, refaz as páginas com padrão profissional, publica na sua hospedagem e envia a proposta — e você administra tudo num painel (CRM) que roda no seu computador, de graça.</p>
 
   <div class="toc">
@@ -113,6 +113,8 @@
   <p>Alguns sites antigos bloqueiam visualização embutida. Use o link "abrir ↗" no cabeçalho da coluna.</p>
   <h3>O dashboard diz "modo arquivo"</h3>
   <p>Você abriu o <code>dashboard.html</code> direto. Pra salvar no banco, abra pelo <code>iniciar-dashboard.bat</code> (requer Python: <code>python.org/downloads</code>, marque "Add to PATH").</p>
+  <h3>Dá pra usar no Codex (OpenAI) também?</h3>
+  <p>Sim, parcialmente: rode <code>codex/instalar-codex.sh</code> do repositório do plugin — as skills e comandos viram skills do Codex (<code>$prospectar</code>, <code>$publicar</code>…). Redesign, publicação, dashboard e contratos funcionam por completo; prospecção no Maps e e-mail pedem participação manual (o Codex não tem o Claude in Chrome nem conectores). Detalhes no README do repositório.</p>
   <h3>Lead sem e-mail?</h3>
   <p>O plugin descarta e busca outro — proposta vai por e-mail. Pros descartados com WhatsApp, peça o texto adaptado pro zap.</p>
 
