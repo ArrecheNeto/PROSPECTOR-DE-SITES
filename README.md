@@ -25,16 +25,20 @@ No Claude Code:
 
 No Claude Cowork (desktop): Configurações → Plugins → Adicionar marketplace → cole a URL deste repositório → instale o **prospector-de-sites**.
 
-### Usar no OpenAI Codex (CLI/IDE)
+### Usar no OpenAI Codex (CLI/IDE/app)
 
-As skills usam o formato SKILL.md, que o Codex também entende. Clone este repositório e rode o instalador:
+Este repositório é um plugin **dual**: os mesmos manifestos servem Claude e Codex. A pasta `prospector-de-sites/` tem os dois manifestos (`.claude-plugin/` e `.codex-plugin/`), e a raiz tem os dois catálogos de marketplace (`.claude-plugin/marketplace.json` e `.agents/plugins/marketplace.json`).
+
+**Como plugin (recomendado):** no Codex, adicione este repositório pelo `/plugins` (marketplace Git) e instale o **prospector-de-sites**. As 7 skills de conhecimento entram sozinhas e são invocáveis por `$prospeccao-maps`, `$redesign-premium`, `$deploy-cloudflare` etc. — ou simplesmente descrevendo a tarefa (ex.: "prospectar nutricionistas em Campinas").
+
+**Atalhos de comando (opcional):** se preferir os atalhos explícitos `$prospectar`, `$publicar`, `$proposta` etc., rode também o instalador — ele adiciona esses comandos em `~/.agents/skills`:
 
 ```
 git clone https://github.com/felipemazetti/PROSPECTOR-DE-SITES
 bash PROSPECTOR-DE-SITES/codex/instalar-codex.sh
 ```
 
-Ele copia as 6 skills para `~/.agents/skills` e converte os 9 comandos em skills invocáveis (`$prospector-setup`, `$prospectar`, `$redesenhar`, `$publicar`, `$proposta`, `$respostas`, `$followup`, `$contrato`, `$editor`). Depois copie `codex/AGENTS-modelo.md` para a sua pasta de trabalho como `AGENTS.md` — ele adapta o fluxo ao Codex.
+Em qualquer caso, copie `codex/AGENTS-modelo.md` para a sua pasta de trabalho como `AGENTS.md` — ele adapta o fluxo ao Codex.
 
 **No Codex**: com a extensão **Codex for Chrome** (`@Chrome`) habilitada no app do Codex, o ciclo fica quase completo — prospecção no Google Maps real e e-mail no seu webmail logado (Gmail ou icloud.com/mail), como no Claude. No Mac, o **Computer Use** (`@Computer Use`) é alternativa para rascunhos direto no Apple Mail. Sem essas ferramentas (Codex CLI puro): a prospecção usa a skill `prospeccao-web` (pesquisa assistida via busca web, sem inventar dado não verificado) e os e-mails saem prontos em `emails-prontos/` para copiar e colar. Redesign, deploy no Cloudflare, dashboard e contratos funcionam integralmente em qualquer modo.
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.20.0 — 2026-07-13
+
+### Instalável como plugin no Codex (não só via script)
+
+- Novo `.agents/plugins/marketplace.json` na raiz: catálogo de marketplace no formato que o Codex exige (sem ele o Codex recusa o repo com "marketplace root does not contain a supported manifest"). Aponta para `./prospector-de-sites`.
+- Novo `prospector-de-sites/.codex-plugin/plugin.json`: manifesto do plugin para Codex (`"skills": "./skills/"`), ao lado do já existente `.claude-plugin/plugin.json` — mesma pasta serve as duas plataformas (padrão do carrossel-markplace-pro).
+- Agora dá pra adicionar o repo pelo `/plugins` do Codex e as 7 skills entram sozinhas; o `codex/instalar-codex.sh` virou EXTRA opcional só para os atalhos de comando (`$prospectar` etc.).
+- Skill `prospeccao-web` movida de `codex/skills/` para `prospector-de-sites/skills/` (fonte única, empacotada no plugin) e reescrita como método neutro "sem navegador automatizado", com nota para preferir `prospeccao-maps` quando houver navegador controlável.
+- Novo `SYNC-COWORK-CODEX.md`: regra de manutenção dos dois alvos e checklist de versão (4 arquivos alinhados). Versão 0.20.0.
+
 ## 0.19.0 — 2026-07-13
 
 ### Codex: e-mail e Maps via @Chrome e @Computer Use

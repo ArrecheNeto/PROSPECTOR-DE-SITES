@@ -19,7 +19,7 @@ As skills citam ferramentas do Claude que têm equivalentes diferentes aqui. Ant
 
 1. **"Claude in Chrome" (navegação)** →
    - **Com `@Chrome` disponível**: use-o como equivalente direto — a prospecção pode seguir a skill `prospeccao-maps` original (navegar no Google Maps), e as verificações de site idem. Respeite captcha/login: pare e avise, nunca contorne.
-   - **Sem `@Chrome`** (CLI): use a skill **`prospeccao-web`** — pesquisa assistida via busca web e fontes públicas, mesmos filtros de qualificação. Nunca finja dados de leads: dado não verificado em fonte pública desqualifica o lead.
+   - **Sem `@Chrome`** (CLI): use a skill **`prospeccao-web`** (empacotada no plugin) — pesquisa assistida via busca web e fontes públicas, mesmos filtros de qualificação. Nunca finja dados de leads: dado não verificado em fonte pública desqualifica o lead.
 2. **Conector do Gmail / iCloud via navegador** → e-mail em 3 níveis, do melhor para o fallback:
    - **`@Chrome`**: siga a seção "Envio" da skill `proposta-email` no webmail logado do usuário (Gmail web ou icloud.com/mail) — criar o rascunho com destinatário, assunto e corpo, conferindo o campo "De" (endereço do `envio.endereco` do config). Para `$respostas`, use a busca do webmail. NUNCA digite senha/código do usuário; se pedir login, o usuário faz.
    - **`@Computer Use` (Mac)**: alternativa nativa — criar o rascunho no **Apple Mail** (Arquivo → Nova mensagem, escolher o remetente certo no "De", salvar como rascunho; o rascunho sincroniza com o iCloud). Para `$respostas`, buscar na caixa de entrada do Mail. Só com autorização explícita do usuário na sessão.

@@ -1,6 +1,11 @@
 #!/bin/bash
-# Prospector de Sites — instalador para OpenAI Codex (CLI/IDE)
-# Copia as skills do plugin para ~/.agents/skills e converte os comandos em skills.
+# Prospector de Sites — instalador manual para OpenAI Codex (CLI/IDE)
+#
+# OPCIONAL: só precisa disto se quiser as skills-comando explícitas ($prospectar,
+# $publicar etc.). O jeito recomendado é instalar como PLUGIN (adicionar o repo pelo
+# /plugins do Codex) — aí as 7 skills de conhecimento entram sozinhas. Este script
+# adiciona, por cima, os atalhos de comando em ~/.agents/skills.
+#
 # Uso: bash codex/instalar-codex.sh   (ou duplo clique no instalar-codex.command)
 set -e
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -17,15 +22,6 @@ for skill in "$PLUGIN"/skills/*/; do
   rm -rf "$DESTINO/$nome"
   cp -R "$skill" "$DESTINO/$nome"
   echo "  ✓ skill $nome"
-done
-
-# 1b. Skills específicas do Codex (variantes adaptadas)
-for skill in "$REPO"/codex/skills/*/; do
-  [ -d "$skill" ] || continue
-  nome="$(basename "$skill")"
-  rm -rf "$DESTINO/$nome"
-  cp -R "$skill" "$DESTINO/$nome"
-  echo "  ✓ skill $nome (variante Codex)"
 done
 
 # 2. Comandos → skills executáveis (frontmatter name/description + corpo adaptado)
