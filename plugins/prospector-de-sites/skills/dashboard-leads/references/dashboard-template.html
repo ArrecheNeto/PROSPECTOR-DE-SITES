@@ -204,14 +204,16 @@ var CFG={};
 var editSlug=null;
 function abrirEdit(slug){editSlug=slug;var l=leads.filter(function(x){return x.slug===slug})[0]||{};
  document.getElementById('m-titulo').textContent='Editar — '+(l.nome||slug);
- document.getElementById('m-status').innerHTML=Object.keys(NOMES).map(function(st){return '<option value="'+st+'"'+(l.status===st?' selected':'')+'>'+NOMES[st]+'</option>'}).join('');
+ document.getElementById('m-status').innerHTML=Object.keys(NOMES).filter(function(st){return st!=='proposta'||l.status==='proposta'}).map(function(st){return '<option value="'+st+'"'+(l.status===st?' selected':'')+'>'+NOMES[st]+'</option>'}).join('');
  ['nome','email','telefone','whatsapp','cidade','nicho','valor','dataProposta','urlNova','obs','manutencao','contratoEm','docCliente','endCliente'].forEach(function(k){document.getElementById('m-'+k).value=l[k]==null?'':l[k]});
  document.getElementById('m-pago').value=l.pago?1:0;document.getElementById('m-contratoStatus').value=l.contratoStatus||'pendente';
  document.getElementById('modal-bg').classList.add('aberto')}
 function fecharEdit(){document.getElementById('modal-bg').classList.remove('aberto');editSlug=null}
 function salvarEdit(){if(!editSlug)return;var ch={};
+ var original=leads.filter(function(l){return l.slug===editSlug})[0]||{};var novoStatus=document.getElementById('m-status').value;
+ if(original.status!=='proposta'&&novoStatus==='proposta'){alert('Proposta enviada só é registrada após confirmação no Gmail Sent.');return}
  ['nome','email','telefone','whatsapp','cidade','nicho','urlNova','obs','dataProposta','docCliente','endCliente'].forEach(function(k){ch[k]=document.getElementById('m-'+k).value||null});
- ch.status=document.getElementById('m-status').value;
+ ch.status=novoStatus;
  var v=document.getElementById('m-valor').value;ch.valor=v===''?null:parseFloat(v);
  var mn=document.getElementById('m-manutencao').value;ch.manutencao=mn===''?null:parseFloat(mn);
  ch.pago=parseInt(document.getElementById('m-pago').value);ch.contratoStatus=document.getElementById('m-contratoStatus').value;
@@ -322,9 +324,9 @@ function dragFim(e){e.target.classList.remove('arrastando')}
 function dragSobre(e){e.preventDefault();e.dataTransfer.dropEffect='move';e.currentTarget.classList.add('alvo')}
 function dragSai(e){e.currentTarget.classList.remove('alvo')}
 function solta(e,st){e.preventDefault();e.currentTarget.classList.remove('alvo');if(!dragSlug)return;
+ if(st==='proposta'){alert('Proposta enviada só é registrada após confirmação no Gmail Sent.');dragSlug=null;render();return}
  var ch={status:st};
  if(st==='fechado'){var v=prompt('Fechou! Valor cobrado (R$):','700');if(v!==null&&v!==''&&!isNaN(parseFloat(v)))ch.valor=parseFloat(v)}
- if(st==='proposta'&&!leads.filter(function(l){return l.slug===dragSlug})[0].dataProposta)ch.dataProposta=new Date().toISOString().slice(0,10);
  salvarOv(dragSlug,ch);dragSlug=null}
 document.getElementById('busca').addEventListener('input',function(){busca=this.value;pag=1;render()});
 var rsz;window.addEventListener('resize',function(){clearTimeout(rsz);rsz=setTimeout(render,150)});

@@ -20,7 +20,7 @@ Colete:
 - **Nichos padrão de prospecção**: sugira nutricionistas, psicólogos, advogados e psiquiatras como ponto de partida, mas deixe o usuário editar livremente.
 - **Cidade/região padrão**.
 - **Leads qualificados por busca**: padrão 10.
-- **Modo de envio da proposta**: padrão "criar rascunho no Gmail para revisão" (recomendado). Alternativa: enviar direto.
+- **Modo de proposta**: criar rascunho no Gmail para revisão. O plugin não envia diretamente.
 
 ## 4. Conexão com a HostGator
 

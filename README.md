@@ -1,6 +1,6 @@
 # Prospector de Sites — Marketplace de plugins do Helio Arreche
 
-Plugin para Claude (Cowork / Claude Code) que roda o ciclo completo de prospecção e venda de sites:
+Plugin para Claude (Cowork / Claude Code) e Codex que roda o ciclo completo de prospecção e venda de sites:
 
 **Achou → Refez → Publicou → Ofertou.**
 
@@ -13,20 +13,34 @@ Plugin para Claude (Cowork / Claude Code) que roda o ciclo completo de prospecç
 
 ## Como instalar
 
-No Claude Code:
+### Codex
 
+Adicione este repositório como marketplace e instale o plugin:
+
+```bash
+codex plugin marketplace add ArrecheNeto/PROSPECTOR-DE-SITES
+codex plugin add prospector-de-sites@arrecheneto-plugins
 ```
+
+No Codex, peça em linguagem natural: “Configure meu Prospector de Sites”, “Prospecte leads em [cidade]” ou “Continue meu pipeline”.
+
+### Claude Code
+
+```text
 /plugin marketplace add ArrecheNeto/PROSPECTOR-DE-SITES
 /plugin install prospector-de-sites@arrecheneto-plugins
 ```
 
-No Claude Cowork (desktop): Configurações → Plugins → Adicionar marketplace → cole a URL deste repositório → instale o **prospector-de-sites**.
+### Claude Cowork
+
+Configurações → Plugins → Adicionar marketplace → cole a URL deste repositório → instale o **prospector-de-sites**.
 
 ## Requisitos
 
-- Claude Cowork (ou Claude Code) com extensão Claude in Chrome conectada
-- Conector do Gmail e do Google Drive
-- Uma pasta conectada no Cowork (config, leads e sites ficam nela)
+- Claude Cowork/Claude Code ou Codex
+- No Claude: extensão Claude in Chrome e pasta conectada no Cowork
+- No Codex: recursos de navegador, Gmail e sistema de arquivos disponíveis para as etapas correspondentes
+- Conector do Gmail e acesso ao Google Drive quando usados pelo fluxo
 - Hospedagem HostGator com acesso ao cPanel
 
 ## Segurança

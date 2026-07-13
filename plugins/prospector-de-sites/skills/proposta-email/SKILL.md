@@ -1,6 +1,6 @@
 ---
 name: proposta-email
-description: Esta skill deve ser usada ao escrever e enviar a proposta comercial por e-mail para um lead prospectado — e-mail de apresentação da nova versão do site, com rapport e sem preço. Acione quando o usuário disser "enviar proposta", "e-mail para o cliente", "mandar o site para o cliente" ou rodar /proposta ou /followup.
+description: Esta skill deve ser usada ao escrever e preparar a proposta comercial por e-mail para um lead prospectado — e-mail de apresentação da nova versão do site, com rapport e sem preço. Acione quando o usuário disser "enviar proposta", "e-mail para o cliente", "mandar o site para o cliente" ou rodar /proposta ou /followup.
 ---
 
 # Proposta por e-mail
@@ -42,14 +42,24 @@ Revise o e-mail pronto contra CADA item; se falhar em qualquer um, reescreva ant
 
 ## Envio
 
-- Modo **rascunho** (padrão): criar via conector do Gmail (`create_draft`) com destinatário, assunto e corpo prontos. Avisar o usuário para revisar antes de enviar.
-- Modo **enviar direto**: se o conector não suportar envio, abrir o Gmail web via Claude in Chrome, ou criar o rascunho e avisar.
+- **Confirmação do rascunho:** require explicit confirmation immediately before Gmail draft creation. Mostrar destinatário, assunto e corpo final para revisão não cria o rascunho. Só depois da confirmação imediata, criar via conector do Gmail (`create_draft`) com destinatário, assunto e corpo aprovados.
+- **Draft-only workflow:** create drafts only. Avisar o usuário para revisar o rascunho no Gmail. Never silently send.
+- Se o usuário pedir envio direto em uma etapa separada, require explicit confirmation immediately before any send. Esta skill ainda termina no rascunho; o usuário envia no Gmail ou autoriza um fluxo de envio separado que tenha seu próprio gate imediato.
 - Nunca enviar para lead sem e-mail confirmado; nesses casos, sugerir contato via WhatsApp com a mesma mensagem adaptada.
 
 ## Página-capa (o que o cliente vê ao clicar)
 
 O link do e-mail leva à página-capa gerada no `/publicar` (template em `references/capa-proposta-template.html`): nome do cliente no topo, antes/depois lado a lado e a assinatura do usuário. Ela existe para dar credibilidade ao clique — o cliente vê o próprio negócio, não um link estranho. Exigências: servida em `https://`, personalizada com dados reais, sem pedido de dado pessoal nenhum.
 
-## Depois do envio
+## Estado do lead
 
-Registrar no banco/`leads.md` (status + data) e no dashboard. As respostas são verificadas pelo comando `/respostas` (Gmail via conector) — sugira ao usuário agendar a verificação diária. Follow-up pelo `/followup` após 3+ dias úteis sem resposta (1 único follow-up por lead: curto, gentil, "conseguiu ver a página?").
+- **Marcador durável:** cada rascunho ativo ocupa uma única linha de `obs` no formato `[prospector:gmail-draft] {"kind":"proposal","draftId":"...","threadId":"...","recipient":"lead@example.com","subject":"Assunto aprovado","createdAt":"YYYY-MM-DD","active":true}`. Grave `draftId` e `threadId` quando retornados pelo Gmail; se o conector não retornar ID, omita-os e use `recipient` + `subject` exatos como identidade fallback. Para follow-up, use `kind:"followup"`. Preserve outras observações.
+- **Draft creation:** keep status `publicado` (or prior state), persist the `[prospector:gmail-draft]` marker with `draftId` when available, exact `recipient`, approved `subject`, `createdAt`, and `active:true`; do not set `dataProposta` or status `proposta`. Criar o rascunho não inicia contagem de follow-up.
+- **Sem duplicados:** antes de criar, procure marcador do mesmo `kind` com `active:true`. O fluxo padrão pula o lead. Uma substituição explícita identifica e atualiza o rascunho existente por `draftId`/`threadId`, ou por `recipient` + `subject` exatos; se atualização não for suportada, pare e informe em vez de criar outro rascunho.
+- **Follow-up ativo:** marcador `kind:"followup"` com `active:true` deve ser substituído/continuado no rascunho existente; não crie duplicado.
+- **Follow-up já enviado:** marcador `kind:"followup"` com `active:false` e `sentAt`, `messageId` ou `threadId` confirma envio e bloqueia permanentemente outro follow-up; o lead fica inelegível mesmo sem a frase legada `Follow-up enviado`.
+- **Gmail Sent confirmation:** set status `proposta` and `dataProposta` to the actual sent date only after the message appears in Gmail Sent. A intenção de enviar, o rascunho e a confirmação do usuário não são prova de envio.
+- Ao confirmar envio, altere o marcador existente para `active:false` e registre `messageId`, `threadId` e `sentAt` quando disponíveis; não acrescente outro marcador ativo.
+- `/respostas` e `/followup` só processam leads com `status='proposta'` e mensagem original confirmada no Gmail Sent.
+
+As respostas são verificadas pelo comando `/respostas` (Gmail via conector) — sugira ao usuário agendar a verificação diária. Follow-up pelo `/followup` após 3+ dias úteis do envio confirmado sem resposta (1 único follow-up enviado por lead: curto, gentil, "conseguiu ver a página?").
