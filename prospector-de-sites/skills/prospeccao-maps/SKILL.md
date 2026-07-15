@@ -75,6 +75,32 @@ Se encontrar o @ (no site ou no perfil do Maps): frequência de posts, qualidade
 
 O lead é candidato quando a análise revela **oportunidade real e verificável** — não só "site ruim", mas qualquer combinação de: site fraco, SEO local fraco, GMN incompleto, redes paradas, ausência de anúncios num negócio que claramente se beneficiaria. Guarde o motivo objetivo e citável de cada nota baixa (ele alimenta a mensagem de 1º contato). Ex.: "site sem SSL e não responsivo; perfil do Google sem fotos nem respostas; Instagram parado há 6 meses".
 
+## Classificação de oportunidade
+
+Depois das notas, classifique cada lead com o motivo objetivo:
+
+- 🔴 **Alta oportunidade** — muitos problemas verificáveis + negócio que claramente fatura (nota/avaliações altas). O dinheiro está escapando de forma óbvia.
+- 🟡 **Média oportunidade** — alguns pontos a melhorar, mas já tem presença digital razoável.
+- 🟢 **Baixa oportunidade** — presença digital sólida; pouco a ganhar. Não vale abordar agora.
+
+## Oportunidades comerciais (serviços recomendados)
+
+Liste os serviços que fazem sentido oferecer a ESTE lead, derivados das notas — só o que a análise sustenta, nunca uma lista genérica:
+
+`Novo Website` · `Landing Page` · `Google Ads` · `Meta Ads` · `SEO Local` · `Google Meu Negócio` · `Sistema Web` · `IA aplicada` · `Automação` · `Dashboard` · `CRM`
+
+Ex.: site sem SSL e lento → **Novo Website**; perfil do Google incompleto → **SEO Local + GMN**; faz tráfego mas sem página de conversão → **Landing Page**. No **Nível A** desta versão, o serviço com pipeline automatizado é o site (`/redesenhar` → `/publicar` → `/contrato`); os demais entram como recomendação consultiva a conduzir na conversa.
+
+## Priorização
+
+Ordene todos os leads da melhor para a pior oportunidade. Score combina:
+
+- **Problemas encontrados** (quanto menor a soma das notas, maior a oportunidade)
+- **Potencial de retorno** (nota do Google + volume de avaliações = negócio que fatura)
+- **Facilidade de contato** (tem e-mail/WhatsApp/Instagram acessível?)
+
+Regra prática de ordenação: `🔴 antes de 🟡 antes de 🟢`; dentro da mesma faixa, quem tem maior potencial financeiro (nota × avaliações) e canal de contato mais direto vem primeiro.
+
 ## Coleta por lead
 
 Nome, nota, nº de avaliações, telefone, WhatsApp, e-mail, URL do site, motivo.
