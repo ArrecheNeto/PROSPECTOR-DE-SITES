@@ -103,11 +103,17 @@ Regra prática de ordenação: `🔴 antes de 🟡 antes de 🟢`; dentro da mes
 
 ## Coleta por lead
 
-Nome, nota, nº de avaliações, telefone, WhatsApp, e-mail, URL do site, motivo.
+Nome, nota, nº de avaliações, telefone, WhatsApp, e-mail, Instagram, **canal de contato escolhido**, URL do site, notas por dimensão, classificação, serviços, motivo.
 
-**WHATSAPP: capture SEMPRE, separado do telefone.** Fontes, na ordem: botão/link de WhatsApp no site do lead (procure `wa.me/`, `api.whatsapp.com` ou ícone de WhatsApp — extraia o número do link); telefone celular do perfil do Maps (números com 9º dígito são celular no Brasil — assuma WhatsApp). Registre no formato internacional `55 + DDD + número` (ex.: `5511999990000`), pronto pra `wa.me`. O WhatsApp alimenta os botões do dashboard e o plano B de abordagem quando o e-mail não responde.
+**WHATSAPP: capture SEMPRE, separado do telefone.** Fontes, na ordem: botão/link de WhatsApp no site do lead (procure `wa.me/`, `api.whatsapp.com` ou ícone de WhatsApp — extraia o número do link); telefone celular do perfil do Maps (números com 9º dígito são celular no Brasil — assuma WhatsApp). Registre no formato internacional `55 + DDD + número` (ex.: `5511999990000`), pronto pra `wa.me`.
 
-**E-MAIL É OBRIGATÓRIO.** A proposta vai por e-mail — lead sem e-mail público não fecha o ciclo. Procure nesta ordem: site (rodapé e página de contato), links `mailto:`, home do site da clínica onde atende, busca no Google por "[nome] + email/contato". Se NÃO encontrar e-mail: **descarte o lead, registre na lista de descartados (com o contato que existir, ex. WhatsApp/Instagram) e continue buscando o próximo** até bater a meta. Atenção: "site" que aponta para diretório de terceiros (localtreino, acheioprofissional etc.) não conta como site próprio — descarta pelo Filtro 2.
+**CONTATO MULTICANAL — e-mail NÃO é mais eliminatório.** O modelo é consultivo: o canal de abordagem é *resultado* da análise, não filtro de entrada. Colete todos os canais e escolha o **melhor canal de contato** nesta ordem de preferência:
+
+1. **E-mail** (preferido — abre o funil `/proposta`). Procure: site (rodapé e página de contato), links `mailto:`, home do site onde atende, busca no Google por "[nome] + email/contato".
+2. **WhatsApp** (se não houver e-mail).
+3. **Instagram DM** (se só houver o @).
+
+Registre qual canal foi escolhido (campo `canal`). **Só descarte o lead se NÃO houver NENHUM canal de contato** (sem e-mail, sem WhatsApp, sem Instagram) — aí sim registre nos descartados e siga. Atenção: "site" que aponta para diretório de terceiros (localtreino, acheioprofissional etc.) não conta como site próprio — trate pelo Filtro 2 (marca `sem site próprio`, mas não descarta se houver canal de contato).
 
 ## Saída — Google Sheets + leads.md local
 
