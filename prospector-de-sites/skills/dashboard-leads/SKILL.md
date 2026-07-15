@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS leads(
   atualizado TEXT DEFAULT (datetime('now','localtime')));
 ```
 
-Status: `novo | redesenhado | publicado | proposta | respondeu | fechado | descartado`. `slug` é a chave.
+Status: `novo | permissao | redesenhado | publicado | proposta | respondeu | fechado | descartado`. `slug` é a chave. `permissao` = **permissão concedida**: o lead respondeu ao 1º contato autorizando ver uma versão — é a ponte entre a prospecção consultiva e o redesign (só se roda `/redesenhar` a partir daqui).
 
 ## Como os comandos atualizam (SEMPRE os 2 passos)
 
@@ -44,6 +44,7 @@ c.commit()
 EOF
 ```
    - `/prospectar` → insere leads (`novo`) e descartados (`descartado`, motivo em `obs`). NUNCA sobrescreva um lead cujo status já avançou.
+   - Cliente respondeu ao 1º contato autorizando ver a versão → `status='permissao'` (permissão concedida). Só a partir daqui se roda `/redesenhar`.
    - `/redesenhar` → `status='redesenhado'` · `/publicar` → `status='publicado'`, `urlNova` · `/proposta` → `status='proposta'`, `dataProposta`.
    - Usuário conta que respondeu/fechou → `status='respondeu'|'fechado'`, `valor` (+ `manutencao` se houver mensalidade).
    - `/contrato` → `contratoStatus='enviado'` + `contratoEm`. Cliente assinou → `contratoStatus='assinado'`. Pagamento recebido → `pago=1`.

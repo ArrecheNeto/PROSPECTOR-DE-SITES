@@ -10,7 +10,7 @@
  --paper:#F0EEE5;--surface:#FAF9F5;--white:#FFFFFF;--ink:#1F1E1D;--muted:#87837B;--line:#E3DFD5;
  --accent:#D97757;--accent-2:#C15F3C;--accent-soft:#F4E5DE;
  --ok:#6A9B72;--ok-soft:#E7EFE8;--warn:#C98A2D;--warn-soft:#F6ECD9;--cinza:#B7B2A7;
- --novo:#7A8CA8;--rede:#9C7BB8;--pub:#5E9DA8;--prop:#C98A2D;--resp:#6A9B72;--fech:#4E8757;
+ --novo:#7A8CA8;--perm:#3E7CB1;--rede:#9C7BB8;--pub:#5E9DA8;--prop:#C98A2D;--resp:#6A9B72;--fech:#4E8757;
  --serif:Georgia,'Times New Roman',serif;--sans:-apple-system,'Segoe UI',Roboto,Inter,sans-serif}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;overflow-x:hidden}
@@ -184,9 +184,9 @@ function aplicaOv(arr){return arr.filter(function(l){return !(OV[l.slug]&&OV[l.s
 var leads=aplicaOv(D.leads||[]);
 if(Object.keys(OV).length)document.getElementById('limpar-ov')&&(document.getElementById('limpar-ov').style.display='inline-block');
 fetch('/api/leads',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){MODE='db';leads=j;fetch('/api/config',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){CFG=(c&&c.contratante!==undefined)?c.contratante:c;HG=(c&&c.hostgator)||{};if(view==='config')render()});var m=document.getElementById('modo');m.textContent='banco conectado';m.className='modo db';m.title='Alterações salvas no prospector.db';var lb=document.getElementById('limpar-ov');if(lb)lb.style.display='none';render()}).catch(function(){});
-var CORES={novo:'var(--novo)',redesenhado:'var(--rede)',publicado:'var(--pub)',proposta:'var(--prop)',respondeu:'var(--resp)',fechado:'var(--fech)',descartado:'var(--cinza)'};
-var NOMES={novo:'Novo',redesenhado:'Redesenhado',publicado:'Publicado',proposta:'Proposta enviada',respondeu:'Respondeu',fechado:'Fechado',descartado:'Descartado'};
-var ORDEM=['novo','redesenhado','publicado','proposta','respondeu','fechado'];
+var CORES={novo:'var(--novo)',permissao:'var(--perm)',redesenhado:'var(--rede)',publicado:'var(--pub)',proposta:'var(--prop)',respondeu:'var(--resp)',fechado:'var(--fech)',descartado:'var(--cinza)'};
+var NOMES={novo:'Novo',permissao:'Permissão concedida',redesenhado:'Redesenhado',publicado:'Publicado',proposta:'Proposta enviada',respondeu:'Respondeu',fechado:'Fechado',descartado:'Descartado'};
+var ORDEM=['novo','permissao','redesenhado','publicado','proposta','respondeu','fechado'];
 var view='geral',busca='',sortCol='nome',sortAsc=true,pag=1,porPag='auto';
 function pagSize(){if(porPag!=='auto')return porPag;var v=document.getElementById('view');var h=v?v.clientHeight:600;return Math.max(4,Math.floor((h-165)/59))}
 document.getElementById('upd').textContent='atualizado em '+(D.atualizado||'—');
@@ -250,7 +250,7 @@ function vGeral(){
  html+='<div class="painel"><h2>Follow-ups pendentes (4+ dias sem resposta)</h2>'+(fu.length?fu.map(function(l){return '<div class="fup-item"><b>'+l.nome+'</b><span class="dias">'+dias(l.dataProposta)+' dias</span><span style="color:var(--muted);font-size:12px">proposta em '+l.dataProposta+'</span>'+(l.whatsapp?'<a style="margin-left:auto;font-size:12px;font-weight:700;color:var(--accent-2)" href="https://wa.me/'+l.whatsapp+'" target="_blank">chamar no WhatsApp →</a>':'')+'</div>'}).join(''):'<div class="vazio">Nenhum follow-up pendente. 👌</div>')+'</div>';
  return html}
 function vPipeline(){var por={};fil().forEach(function(l){(por[l.status]=por[l.status]||[]).push(l)});
- return '<p class="dica-drag">Arraste um card para mudar o status — os automáticos (redesenhado, publicado, proposta) o plugin move sozinho; use o arrasto principalmente para <b>Respondeu</b> e <b>Fechado</b>.</p><div class="board">'+ORDEM.concat(['descartado']).map(function(s){var arr=por[s]||[];return '<div class="col" data-st="'+s+'" ondragover="dragSobre(event)" ondragleave="dragSai(event)" ondrop="solta(event,\''+s+'\')"><h3>'+NOMES[s]+'<span>'+arr.length+'</span></h3><div class="cards">'+(arr.length?arr.map(card).join(''):'<div class="vazio">solte aqui</div>')+'</div></div>'}).join('')+'</div>'}
+ return '<p class="dica-drag">Arraste um card para mudar o status — os automáticos (redesenhado, publicado, proposta) o plugin move sozinho; use o arrasto principalmente para <b>Permissão concedida</b> (cliente autorizou ver a versão), <b>Respondeu</b> e <b>Fechado</b>.</p><div class="board">'+ORDEM.concat(['descartado']).map(function(s){var arr=por[s]||[];return '<div class="col" data-st="'+s+'" ondragover="dragSobre(event)" ondragleave="dragSai(event)" ondrop="solta(event,\''+s+'\')"><h3>'+NOMES[s]+'<span>'+arr.length+'</span></h3><div class="cards">'+(arr.length?arr.map(card).join(''):'<div class="vazio">solte aqui</div>')+'</div></div>'}).join('')+'</div>'}
 function vClientes(){var ls=fil().slice().sort(function(a,b){var x=a[sortCol]||'',y=b[sortCol]||'';return(x<y?-1:x>y?1:0)*(sortAsc?1:-1)});
  var pp=pagSize();var total=ls.length,paginas=Math.max(1,Math.ceil(total/pp));if(pag>paginas)pag=paginas;
  var ini=(pag-1)*pp,fim=Math.min(ini+pp,total);ls=ls.slice(ini,fim);
