@@ -5,7 +5,9 @@ description: Esta skill deve ser usada ao escrever e enviar a proposta comercial
 
 # Proposta por e-mail
 
-O e-mail NÃO vende — ele desperta curiosidade e prova trabalho feito. O fechamento (preço, escopo, reunião) acontece na resposta. Um e-mail que parece de vendedor morre no spam; um e-mail que parece de uma pessoa que já trabalhou de graça pro destinatário é aberto e respondido.
+Este é o passo **pós-permissão**: o cliente já recebeu a mensagem de 1º contato (skill `prospeccao-maps`) e respondeu autorizando ver uma versão (status `permissão concedida` no CRM). Ou seja, este e-mail é **aguardado**, não a frio — "como combinamos, aqui está". Isso o torna muito mais forte e defensável contra spam.
+
+O e-mail NÃO vende — ele desperta curiosidade e prova o trabalho que o cliente pediu para ver. O fechamento (preço, escopo, reunião) acontece na resposta. Um e-mail que parece de vendedor morre no spam; um e-mail que retoma uma conversa já iniciada e entrega o que foi combinado é aberto e respondido.
 
 ## Princípios
 

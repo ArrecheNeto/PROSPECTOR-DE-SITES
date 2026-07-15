@@ -11,7 +11,7 @@ De graça, rodando no seu computador, sem mensalidade.
 | Comando | O que acontece |
 |---|---|
 | `/setup` | Configura tudo uma vez (pasta, assinatura, nichos) e entrega o manual + dashboard |
-| `/prospectar` | Varre o Google Maps: negócios nota ≥ 4.7 com site fraco E e-mail público → planilha no Google Sheets + CRM |
+| `/prospectar` | Diagnóstico consultivo B2B: varre o Google Maps (qualquer nicho), dá notas 0-10 de Site/Google/Instagram/Anúncios, classifica em 🔴/🟡/🟢, recomenda serviços, prioriza e já escreve a mensagem de 1º contato (que pede permissão) → planilha no Google Sheets + CRM |
 | `/redesenhar` | Recria as páginas com estética premium (fotos/logo/conteúdo REAIS) + editor visual + comparador antes/depois |
 | `/editor` | Edita texto e imagem da página no navegador, sem código |
 | `/publicar` | Publica na HostGator SOZINHO (publicador automático, sem cPanel) + página-capa da proposta + HTTPS validado |
@@ -22,7 +22,9 @@ De graça, rodando no seu computador, sem mensalidade.
 
 ## 📊 CRM local (dashboard)
 
-Kanban com drag & drop, funil, clientes, sites, comparador, follow-ups, contratos e painel financeiro (recebido, a receber, MRR e projeção 12 meses) — tudo num banco SQLite **na sua pasta**. Duplo clique no `iniciar-dashboard.bat` (Windows) ou `iniciar-dashboard.command` (Mac). Requisito: [Python](https://www.python.org/downloads/) (marque "Add to PATH").
+Kanban com drag & drop (colunas Novo → **Permissão concedida** → Redesenhado → Publicado → Proposta → Respondeu → Fechado), funil, clientes, sites, comparador, follow-ups, contratos e painel financeiro (recebido, a receber, MRR e projeção 12 meses) — tudo num banco SQLite **na sua pasta**. Duplo clique no `iniciar-dashboard.bat` (Windows) ou `iniciar-dashboard.command` (Mac). Requisito: [Python](https://www.python.org/downloads/) (marque "Add to PATH").
+
+> 🤝 **Funil consultivo:** o `/prospectar` não manda o site pronto de cara — ele diagnostica e **pede permissão**. Quando o cliente autoriza ver a versão, o card entra em *Permissão concedida* e só então você roda `/redesenhar`. Você investe trabalho só em quem já topou.
 
 ## Como instalar
 
