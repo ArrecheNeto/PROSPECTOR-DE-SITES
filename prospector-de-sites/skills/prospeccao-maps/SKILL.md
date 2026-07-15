@@ -138,15 +138,23 @@ A mensagem é adaptada ao canal escolhido (e-mail um pouco mais formal; WhatsApp
 
 ## Saída — Google Sheets + leads.md local
 
-Destino principal: PLANILHA DO GOOGLE (via conector do Google Drive: `create_file` com CSV em `textContent` e `contentMimeType: text/csv` — converte automaticamente para Sheets). Título `Leads Prospector — [nicho] [cidade]`; incluir qualificados e descartados, ranqueados por potencial (nota alta + site pior). Entregar o link ao usuário.
+Destino principal: PLANILHA DO GOOGLE (via conector do Google Drive: `create_file` com CSV em `textContent` e `contentMimeType: text/csv` — converte automaticamente para Sheets). Título `Leads Prospector — [nicho] [cidade]`; incluir qualificados e descartados, ordenados pela **priorização** (🔴 antes de 🟡 antes de 🟢; dentro da faixa, maior potencial financeiro primeiro). Entregar o link ao usuário. Se o `create_file` do Drive falhar, não perca o trabalho: mantenha o `leads.md` local completo e avise o usuário que a planilha não subiu (com o motivo), sugerindo tentar de novo.
 
 Cópia de trabalho local `leads.md` (mesmas colunas) para controle de status, já que o conector do Drive não edita células:
 
 ```markdown
-| # | Nome | Nota | Aval. | E-mail | Telefone | Site atual | Motivo | Status | URL nova |
+| # | Nome | Segmento | Cidade | Site | Instagram | Canal | Nota site | Nota Google | Nota IG | Problemas | Serviços | Prioridade | Status | Mensagem pronta | URL nova |
 ```
 
-Status possíveis: `novo`, `redesenhado`, `publicado`, `proposta enviada`. Quando um status mudar (redesenhar/publicar/proposta), regenerar a planilha do Google com os dados acumulados e atualizar o `dashboard.html` (skill `dashboard-leads`). Nunca sobrescrever leads antigos — apenas acrescentar e atualizar.
+Status possíveis: `novo`, `permissão concedida`, `redesenhado`, `publicado`, `proposta enviada`. Quando um status mudar, regenerar a planilha do Google com os dados acumulados e atualizar o `dashboard.html` (skill `dashboard-leads`). Nunca sobrescrever leads antigos — apenas acrescentar e atualizar. Colunas que não puderam ser preenchidas ficam com `não confirmado`, nunca com um valor inventado.
+
+## Guardrails (inegociáveis)
+
+- **Nunca invente informação.** Toda nota, elogio e problema vem de evidência observável.
+- **Diferencie fato de hipótese.** Se é dedução, não afirme como certeza.
+- **O que não puder confirmar** (Instagram bloqueado, anúncios não verificáveis) → escreva `não confirmado` / "Não foi possível confirmar." explicitamente.
+- **Informação incompleta** → marque no relatório em vez de preencher no chute.
+- **Não gere a mensagem de 1º contato antes de concluir a análise** daquele lead.
 
 ## Boas práticas
 
