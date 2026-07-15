@@ -8,7 +8,7 @@ Prospecte leads qualificados seguindo a skill `prospeccao-maps`.
 ## Preparação
 
 1. Leia `prospector-config.json` na pasta conectada. Se não existir, oriente a rodar `/setup` primeiro.
-2. Determine nicho e cidade: use os argumentos `$ARGUMENTS` se informados; senão, pergunte ao usuário qual dos nichos padrão do config usar (e confirme a cidade). O usuário SEMPRE pode trocar nicho e cidade na hora — nunca trave nos padrões.
+2. Determine nicho e cidade: use os argumentos `$ARGUMENTS` se informados; senão, ofereça as **categorias sugeridas** da skill `prospeccao-maps` (clínicas, dentistas, academias, restaurantes, lojas, imobiliárias, advocacia, contabilidades, veterinárias, escolas, construtoras, etc.) OU os nichos padrão do config, e confirme a cidade. As categorias são sugestões — o usuário SEMPRE pode digitar qualquer outro nicho e trocar a cidade na hora. Nunca trave na lista nem nos padrões.
 3. Leia `leads.md` na pasta conectada (se existir) para saber quais profissionais já foram avaliados — estes devem ser EXCLUÍDOS da nova busca.
 
 ## Execução

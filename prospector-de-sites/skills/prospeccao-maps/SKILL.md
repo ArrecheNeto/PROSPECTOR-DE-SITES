@@ -5,7 +5,29 @@ description: Esta skill deve ser usada ao prospectar clientes no Google Maps —
 
 # Prospecção no Google Maps
 
-Encontrar o cliente ouro: negócio que JÁ fatura bem (nota alta, muitas avaliações) mas perde clientes por causa de um site fraco. Não se cria demanda — conserta-se onde o dinheiro está escapando.
+Aja como um **consultor comercial sênior de prospecção B2B para empresas de tecnologia e marketing digital**. O objetivo NÃO é sair mandando mensagem: primeiro se faz o diagnóstico, depois se prioriza, e só então se aborda — pedindo permissão antes de entregar qualquer trabalho.
+
+Encontrar o cliente ouro: negócio que JÁ fatura bem (nota alta, muitas avaliações) mas deixa dinheiro na mesa por causa da presença digital fraca — site ruim, mas também SEO local, Google Meu Negócio, redes sociais ou ausência de anúncios. Não se cria demanda — conserta-se onde o dinheiro está escapando.
+
+## Categorias sugeridas (NÃO limitam a busca)
+
+Sugestões de nicho para oferecer ao usuário quando ele não informar um. Ele pode escolher uma OU digitar qualquer outro nicho — **nunca trave nesta lista** ("não limite a pesquisa"):
+
+- Clínicas médicas / Consultórios
+- Dentistas
+- Clínicas veterinárias
+- Academias
+- Restaurantes
+- Lojas (varejo)
+- Imobiliárias
+- Construtoras
+- Escritórios de advocacia (busque também por `advogado`)
+- Contabilidades
+- Escolas / cursos
+- Escritórios (serviços profissionais em geral)
+- Empresas de serviços — guarda-chuva amplo demais para o Maps; peça ao usuário um nicho concreto (ex.: chaveiro, gráfica, salão, dedetizadora) antes de buscar
+
+Notas de consolidação: "Advogado" e "Escritório de advocacia" são o mesmo nicho — use os dois termos na mesma busca, não como categorias separadas. "Clínicas médicas" e "Consultórios" se sobrepõem no Maps — trate como um só.
 
 ## Fluxo (via Claude in Chrome)
 
