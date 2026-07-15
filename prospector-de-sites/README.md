@@ -1,4 +1,4 @@
-# Prospector de Sites
+# Prospector de Sites — v2.1.0
 
 Prospecção semi-automática de clientes com sites ruins: acha, redesenha, publica e oferta.
 
@@ -32,3 +32,7 @@ O plugin mantém um painel de controle na sua pasta: `prospector.db` (banco SQLi
 ## Onde ficam os dados
 
 Tudo na pasta conectada: `prospector-config.json` (preferências e credenciais — a senha do cPanel fica em texto no seu computador), `leads.md` (pipeline) e `sites/[slug]/` (páginas criadas).
+
+## Como atualizar
+
+No chat: `/plugin marketplace update arrecheneto-plugins` e reinicie o app (versão certa: 2.1.0). Da 2.1.0 em diante, atualiza sozinho.
