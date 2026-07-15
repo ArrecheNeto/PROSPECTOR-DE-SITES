@@ -115,6 +115,27 @@ Nome, nota, nº de avaliações, telefone, WhatsApp, e-mail, Instagram, **canal 
 
 Registre qual canal foi escolhido (campo `canal`). **Só descarte o lead se NÃO houver NENHUM canal de contato** (sem e-mail, sem WhatsApp, sem Instagram) — aí sim registre nos descartados e siga. Atenção: "site" que aponta para diretório de terceiros (localtreino, acheioprofissional etc.) não conta como site próprio — trate pelo Filtro 2 (marca `sem site próprio`, mas não descarta se houver canal de contato).
 
+## Mensagem de 1º contato (diagnóstico + pedido de permissão)
+
+Para cada lead qualificado, gere UMA mensagem de abordagem — o primeiro contato. Ela **não entrega nada e não vende**: mostra que você analisou de verdade e **pede permissão** para preparar algo. É a mensagem que abre o funil; o `/proposta` (site já no ar) só acontece depois que o cliente diz "pode mandar".
+
+Regras:
+
+- **Máximo 120 palavras.** Tom humano, profissional, consultivo, sem pressão, sem cara de spam.
+- **Totalmente personalizada** — cite pontos ESPECÍFICOS da análise (a nota real do Google, uma avaliação, o defeito objetivo do site). Jamais texto genérico.
+- **Nunca invente** — só fale de fatos observados. Se algo é hipótese, não afirme como certeza.
+
+Estrutura:
+
+1. **Cumprimento**
+2. **Elogio sincero** (verificável — nota/avaliações reais)
+3. **Problema identificado** (1-2 pontos objetivos da análise)
+4. **Oportunidade de melhoria**
+5. **Benefício esperado**
+6. **Pedido de permissão** — *"faria sentido eu preparar e te mostrar, sem compromisso, uma versão de como ficaria?"* (NUNCA "já refiz seu site" — nada é entregue neste estágio)
+
+A mensagem é adaptada ao canal escolhido (e-mail um pouco mais formal; WhatsApp/DM mais curto e direto). Quando o cliente responde "pode mandar", o lead vai para o status `permissão concedida` e só então se roda `/redesenhar`.
+
 ## Saída — Google Sheets + leads.md local
 
 Destino principal: PLANILHA DO GOOGLE (via conector do Google Drive: `create_file` com CSV em `textContent` e `contentMimeType: text/csv` — converte automaticamente para Sheets). Título `Leads Prospector — [nicho] [cidade]`; incluir qualificados e descartados, ranqueados por potencial (nota alta + site pior). Entregar o link ao usuário.
