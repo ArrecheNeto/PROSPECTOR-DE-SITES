@@ -1,6 +1,6 @@
 ---
 name: prospeccao-maps
-description: Esta skill deve ser usada ao prospectar clientes no Google Maps — buscar negócios bem avaliados com sites ruins, qualificar leads, avaliar qualidade de sites de terceiros e montar a planilha de leads. Acione quando o usuário disser "prospectar", "buscar clientes", "achar leads", "clientes com site ruim" ou rodar /prospectar.
+description: Esta skill deve ser usada ao prospectar clientes no Google Maps como consultor B2B — buscar negócios bem avaliados, fazer o diagnóstico digital (notas 0-10 de site, Google, Instagram e anúncios), classificar a oportunidade (🔴/🟡/🟢), recomendar serviços, priorizar, escolher o canal de contato e escrever a mensagem de 1º contato, montando a planilha de leads. Acione quando o usuário disser "prospectar", "buscar clientes", "achar leads", "analisar empresas", "oportunidades", "clientes com site ruim" ou rodar /prospectar.
 ---
 
 # Prospecção no Google Maps
