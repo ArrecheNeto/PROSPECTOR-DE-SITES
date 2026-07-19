@@ -183,7 +183,7 @@ var MODE='file';
 function aplicaOv(arr){return arr.filter(function(l){return !(OV[l.slug]&&OV[l.slug]._del)}).map(function(l){return Object.assign({},l,OV[l.slug]||{})})}
 var leads=aplicaOv(D.leads||[]);
 if(Object.keys(OV).length)document.getElementById('limpar-ov')&&(document.getElementById('limpar-ov').style.display='inline-block');
-fetch('/api/leads',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){MODE='db';leads=j;fetch('/api/config',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){CFG=(c&&c.contratante!==undefined)?c.contratante:c;HG=(c&&c.hostgator)||{};if(view==='config')render()});var m=document.getElementById('modo');m.textContent='banco conectado';m.className='modo db';m.title='Alterações salvas no prospector.db';var lb=document.getElementById('limpar-ov');if(lb)lb.style.display='none';render()}).catch(function(){});
+fetch('/api/leads',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){MODE='db';leads=j;fetch('/api/config',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){CFG=(c&&c.contratante!==undefined)?c.contratante:c;VC=(c&&c.vercel)||{};if(view==='config')render()});var m=document.getElementById('modo');m.textContent='banco conectado';m.className='modo db';m.title='Alterações salvas no prospector.db';var lb=document.getElementById('limpar-ov');if(lb)lb.style.display='none';render()}).catch(function(){});
 var CORES={novo:'var(--novo)',redesenhado:'var(--rede)',publicado:'var(--pub)',proposta:'var(--prop)',respondeu:'var(--resp)',fechado:'var(--fech)',descartado:'var(--cinza)'};
 var NOMES={novo:'Novo',redesenhado:'Redesenhado',publicado:'Publicado',proposta:'Proposta enviada',respondeu:'Respondeu',fechado:'Fechado',descartado:'Descartado'};
 var ORDEM=['novo','redesenhado','publicado','proposta','respondeu','fechado'];
@@ -227,14 +227,41 @@ function nav(){
 function pillStatus(s){return '<span class="pill" style="background:color-mix(in srgb,'+CORES[s]+' 18%,white);color:'+CORES[s]+'">'+NOMES[s]+'</span>'}
 function acoes(l){var a=[];
  if(l.siteAntigo)a.push('<a href="'+l.siteAntigo+'" target="_blank">antigo</a>');
- if(l.slug&&['redesenhado','publicado','proposta','respondeu','fechado'].indexOf(l.status)>=0){a.push('<a href="sites/'+l.slug+'/'+l.slug+'.html" target="_blank">página</a>');a.push('<a href="sites/'+l.slug+'/'+l.slug+'-editor.html" target="_blank">editar site</a>')}
+ if(l.slug&&['redesenhado','publicado','proposta','respondeu','fechado'].indexOf(l.status)>=0){a.push('<a href="clientes_gerados/'+l.slug+'/index.html" target="_blank">página</a>');a.push('<a href="clientes_gerados/'+l.slug+'/index-editor.html" target="_blank">editar site</a>')}
  if(l.urlNova)a.push('<a href="'+l.urlNova+'" target="_blank">no ar ↗</a>');
  if(l.whatsapp)a.push('<a href="https://wa.me/'+l.whatsapp+'" target="_blank">whatsapp</a>');
  if(l.email&&l.email.indexOf('@')>0)a.push('<a href="mailto:'+l.email+'">e-mail</a>');
+ if(l.status==='fechado')a.push('<a href="#" onclick="vincularDominio(\''+l.slug+'\');return false" style="background:var(--ok);color:#fff;border-color:var(--ok)">vincular domínio</a>');
  a.push('<a href="#" onclick="abrirEdit(\''+l.slug+'\');return false">✎ dados</a>');
  a.push('<a href="#" class="del" onclick="deletar(\''+l.slug+'\');return false">✕ excluir</a>');
  return '<div class="acoes">'+a.join('')+'</div>'}
 
+function vincularDominio(slug){
+ var dom=prompt("Digite o domínio próprio do cliente (ex: drfulando.com.br ou www.drfulando.com.br):");
+ if(!dom)return;
+ dom=dom.trim().replace(/^https?:\/\//i,'');
+ if(!dom)return;
+ var btn=event.target;
+ var origText=btn.textContent;
+ btn.textContent="Vinculando...";
+ btn.style.pointerEvents="none";
+ fetch('/api/leads/'+encodeURIComponent(slug)+'/vincular',{
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({dominio:dom})
+ }).then(function(r){
+  if(!r.ok)return r.json().then(function(err){throw new Error(err.erro||"Erro desconhecido")});
+  return r.json();
+ }).then(function(res){
+  alert("✓ Domínio vinculado com sucesso!\n\nInstruções de DNS:\n"+res.instrucoes+"\n\nNova URL: "+res.url);
+  recarrega();
+ }).catch(function(err){
+  alert("Erro ao vincular domínio: "+err.message);
+ }).finally(function(){
+  btn.textContent=origText;
+  btn.style.pointerEvents="auto";
+ });
+}
 function card(l){var f=l.status==='proposta'&&dias(l.dataProposta)>=4?'<span class="tag fup">follow-up '+dias(l.dataProposta)+'d</span>':'';
  return '<div class="card" draggable="true" ondragstart="dragIni(event,\''+l.slug+'\')" ondragend="dragFim(event)" style="--cor:'+CORES[l.status]+'"><div class="nm">'+l.nome+f+'</div><div class="mt">'+(l.nota?'★ '+l.nota+' ('+l.avaliacoes+')':'')+(l.cidade?' · '+l.cidade:'')+'</div>'+(l.motivo?'<div class="motivo">'+l.motivo+'</div>':'')+(l.obs?'<div class="mt">'+l.obs+'</div>':'')+(l.valor?'<div class="valor">R$ '+l.valor.toLocaleString('pt-BR')+(l.manutencao?' <span style="color:var(--muted);font-weight:600;font-size:11px">+ R$ '+l.manutencao.toLocaleString('pt-BR')+'/mês</span>':'')+'</div>':'')+acoes(l)+'</div>'}
 function vGeral(){
@@ -259,7 +286,7 @@ function irPag(n){pag=n;render()}
 function mudaPorPag(v){porPag=v==='auto'?'auto':parseInt(v);pag=1;render()}
 function vSites(){var ls=fil().filter(function(l){return['redesenhado','publicado','proposta','respondeu','fechado'].indexOf(l.status)>=0});
  return ls.length?'<div class="sites-grid">'+ls.map(function(l){
-  var pg='sites/'+l.slug+'/'+l.slug+'.html';
+  var pg='clientes_gerados/'+l.slug+'/index.html';
   var prim=l.urlNova?'<a class="prim" href="'+l.urlNova+'" target="_blank">Ver no ar ↗</a>':'<a class="prim" href="'+pg+'" target="_blank">Ver página</a>';
   var ic=[];
   if(l.siteAntigo)ic.push('<a href="'+l.siteAntigo+'" target="_blank" title="site antigo do cliente">antigo</a>');
@@ -268,19 +295,19 @@ function vSites(){var ls=fil().filter(function(l){return['redesenhado','publicad
   if(l.email&&l.email.indexOf('@')>0)ic.push('<a href="mailto:'+l.email+'">e-mail</a>');
   ic.push('<a href="#" onclick="abrirEdit(\''+l.slug+'\');return false">✎ dados</a>');
   ic.push('<a href="#" class="del" onclick="deletar(\''+l.slug+'\');return false">✕</a>');
-  return '<div class="site-card"><div class="prev"><iframe src="'+pg+'" loading="lazy"></iframe></div><div class="info"><div class="s-head"><span class="s-nm">'+l.nome+'</span>'+pillStatus(l.status)+'</div><div class="s-sub">'+[l.nicho,l.cidade,(l.nota?'★ '+l.nota+' ('+l.avaliacoes+')':null)].filter(Boolean).join(' · ')+'</div><div class="s-main">'+prim+'<a class="sec" href="sites/'+l.slug+'/'+l.slug+'-editor.html" target="_blank">Editar site</a></div><div class="s-icons">'+ic.join('')+'</div></div></div>'
+  return '<div class="site-card"><div class="prev"><iframe src="'+pg+'" loading="lazy"></iframe></div><div class="info"><div class="s-head"><span class="s-nm">'+l.nome+'</span>'+pillStatus(l.status)+'</div><div class="s-sub">'+[l.nicho,l.cidade,(l.nota?'★ '+l.nota+' ('+l.avaliacoes+')':null)].filter(Boolean).join(' · ')+'</div><div class="s-main">'+prim+'<a class="sec" href="clientes_gerados/'+l.slug+'/index-editor.html" target="_blank">Editar site</a></div><div class="s-icons">'+ic.join('')+'</div></div></div>'
  }).join('')+'</div>':'<div class="painel vazio">Nenhum site redesenhado ainda — rode /redesenhar.</div>'}
 function vFollowup(){var fu=fil().filter(function(l){return l.status==='proposta'&&dias(l.dataProposta)>=4});
  return '<div class="painel"><h2>Propostas aguardando follow-up</h2>'+(fu.length?fu.map(card).join(''):'<div class="vazio">Nenhum follow-up pendente.</div>')+'</div>'}
-function abrirContrato(slug,nome){document.getElementById('doc-titulo').textContent='Contrato — '+nome;document.getElementById('doc-frame').src='sites/'+slug+'/contrato-'+slug+'.html';document.getElementById('doc-bg').classList.add('aberto')}
+function abrirContrato(slug,nome){document.getElementById('doc-titulo').textContent='Contrato — '+nome;document.getElementById('doc-frame').src='clientes_gerados/'+slug+'/contrato-'+slug+'.html';document.getElementById('doc-bg').classList.add('aberto')}
 function fecharDoc(){document.getElementById('doc-bg').classList.remove('aberto');document.getElementById('doc-frame').src='about:blank'}
 function printDoc(){var f=document.getElementById('doc-frame');try{f.contentWindow.focus();f.contentWindow.print()}catch(e){window.open(f.src,'_blank');alert('Abri o contrato em nova aba — use Ctrl+P para imprimir/salvar PDF.')}}
 function pillCt(st){st=st||'pendente';return '<span class="pill ct-'+st+'">'+st.charAt(0).toUpperCase()+st.slice(1)+'</span>'}
 function vContratos(){var ls=fil().filter(function(l){return l.status==='fechado'});
  if(!ls.length)return '<div class="painel vazio">Nenhum cliente fechado ainda. Quando fechar, arraste o card pra "Fechado" e peça ao Claude: /contrato [cliente].</div>';
  return '<div class="painel" style="overflow-x:auto"><table><thead><tr><th>Cliente</th><th>Valor</th><th>Manutenção</th><th>Contrato</th><th>Data</th><th>Pago</th><th>Ações</th></tr></thead><tbody>'+ls.map(function(l){
-  var doc='sites/'+l.slug+'/contrato-'+l.slug+'.html';
-  var acao=(l.contratoStatus&&l.contratoStatus!=='pendente')?'<a href="#" class="btn-ct ver" onclick="abrirContrato(\''+l.slug+'\',\''+l.nome.replace(/'/g,'')+'\');return false" title="abrir a folha do contrato aqui no painel">👁 Ver contrato</a><a href="sites/'+l.slug+'/contrato-'+l.slug+'.docx" download class="btn-ct baixar" title="baixa o Word travado que vai pro cliente">⬇ Baixar .docx</a>'+(l.contratoStatus==='assinado'?'<a href="sites/'+l.slug+'/contrato-'+l.slug+'-assinado.docx" download class="btn-ct ass">✓ Assinado</a>':'')+'':'<span style="color:var(--muted);font-size:12px">peça /contrato ao Claude</span>';
+  var doc='clientes_gerados/'+l.slug+'/contrato-'+l.slug+'.html';
+  var acao=(l.contratoStatus&&l.contratoStatus!=='pendente')?'<a href="#" class="btn-ct ver" onclick="abrirContrato(\''+l.slug+'\',\''+l.nome.replace(/'/g,'')+'\');return false" title="abrir a folha do contrato aqui no painel">👁 Ver contrato</a><a href="clientes_gerados/'+l.slug+'/contrato-'+l.slug+'.docx" download class="btn-ct baixar" title="baixa o Word travado que vai pro cliente">⬇ Baixar .docx</a>'+(l.contratoStatus==='assinado'?'<a href="clientes_gerados/'+l.slug+'/contrato-'+l.slug+'-assinado.docx" download class="btn-ct ass">✓ Assinado</a>':'')+'':'<span style="color:var(--muted);font-size:12px">peça /contrato ao Claude</span>';
   return '<tr><td><b>'+l.nome+'</b></td><td>'+(l.valor?'R$ '+l.valor.toLocaleString('pt-BR'):'—')+'</td><td>'+(l.manutencao?'R$ '+l.manutencao.toLocaleString('pt-BR')+'/mês':'—')+'</td><td><select class="mini" onchange="salvarOv(\''+l.slug+'\',{contratoStatus:this.value})">'+['pendente','enviado','assinado'].map(function(cs){return '<option value="'+cs+'"'+((l.contratoStatus||'pendente')===cs?' selected':'')+'>'+cs+'</option>'}).join('')+'</select></td><td>'+(l.contratoEm||'—')+'</td><td><input type="checkbox" class="fin-check" '+(l.pago?'checked':'')+' onchange="salvarOv(\''+l.slug+'\',{pago:this.checked?1:0})"></td><td>'+acao+'</td></tr>'
  }).join('')+'</tbody></table></div>'}
 function vFinanceiro(){var ls=fil().filter(function(l){return l.status==='fechado'});
@@ -294,23 +321,23 @@ function vFinanceiro(){var ls=fil().filter(function(l){return l.status==='fechad
  return html}
 var CFG_CAMPOS=[['nome','Nome completo / razão social'],['cpfCnpj','CPF ou CNPJ'],['endereco','Endereço (rua, nº, bairro)'],['cidadeUf','Cidade/UF'],['email','E-mail'],['whatsapp','WhatsApp (55DDDnúmero)']];
 function vConfig(){
- var db=MODE==='db';
- var campos=CFG_CAMPOS.map(function(c){return '<div><label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 4px">'+c[1]+'</label><input id="cfg-'+c[0]+'" value="'+((CFG[c[0]]||'').replace(/"/g,'&quot;'))+'" '+(db?'':'disabled')+' style="width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:13.5px;font-family:var(--sans);color:var(--ink);background:var(--surface)"></div>'}).join('');
- return '<div class="painel" style="max-width:640px"><h2>Meus dados — quem assina os contratos</h2><p style="font-size:13px;color:var(--muted);margin:0 0 6px">Preencha uma vez e todo contrato gerado pelo /contrato já sai com os seus dados de CONTRATADO(A) completos. Fica salvo no prospector-config.json, no seu computador.</p>'+campos+'<div style="margin-top:18px;display:flex;gap:10px;align-items:center"><button '+(db?'':'disabled')+' onclick="salvarCfg()" style="border:0;border-radius:10px;padding:11px 22px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff">Salvar meus dados</button><span id="cfg-ok" style="color:var(--ok);font-weight:700;font-size:13px;display:none">salvo ✓</span>'+(db?'':'<span style="color:var(--warn);font-size:12.5px;font-weight:600">abra pelo iniciar-dashboard.bat para editar — ou dite os dados pro Claude no /setup</span>')+'</div></div>'+
- '<div class="painel" style="max-width:640px"><h2>Conex\u00e3o HostGator \u2014 publica\u00e7\u00e3o autom\u00e1tica</h2><p style="font-size:13px;color:var(--muted);margin:0 0 6px">Preencha uma vez e o /publicar sobe os sites sozinho, sem login no cPanel. A senha vai deste painel DIRETO pro arquivo no seu computador \u2014 nunca passa pelo chat.</p>'+[['usuario','Usu\u00e1rio do cPanel','text'],['dominio','Dom\u00ednio principal','text'],['servidor','Servidor (ex.: br1024.hostgator.com.br)','text'],['pastaBase','Pasta base (padr\u00e3o: clientes)','text'],['senha','Senha do cPanel','password']].map(function(c){var ph=c[0]==='senha'?(HG.senhaDefinida?'\u2022\u2022\u2022\u2022\u2022 salva \u2014 deixe em branco pra manter':'cole a senha do cPanel'):'';return '<div><label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 4px">'+c[1]+'</label><input id="hg-'+c[0]+'" type="'+c[2]+'" placeholder="'+ph+'" value="'+(c[0]==='senha'?'':((HG[c[0]]||'').replace(/"/g,'&quot;')))+'" '+(db?'':'disabled')+' style="width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:14px;font-family:var(--sans);background:'+(db?'var(--white)':'#f0ede4')+'"></div>'}).join('')+'<div style="margin-top:18px;display:flex;gap:10px;align-items:center"><button '+(db?'':'disabled')+' onclick="salvarHG()" style="border:0;border-radius:10px;padding:11px 22px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff">Salvar conex\u00e3o</button><span id="hg-ok" style="color:var(--ok);font-weight:700;font-size:13px;display:none">salvo \u2713</span>'+(db?(HG.senhaDefinida?'<span style="color:var(--ok);font-size:12.5px;font-weight:600">\u2713 senha configurada</span>':'<span style="color:var(--warn);font-size:12.5px;font-weight:600">falta a senha pra publica\u00e7\u00e3o autom\u00e1tica</span>'):'<span style="color:var(--warn);font-size:12.5px;font-weight:600">abra pelo iniciar-dashboard.bat para editar</span>')+'</div></div>'+
- '<div class="painel" style="max-width:640px"><h2>E os dados do cliente?</h2><p style="font-size:13px;color:var(--muted);margin:0">CPF/CNPJ e endereço do cliente entram quando ele fechar: peça pelo WhatsApp e (1) cole a resposta pro Claude no /contrato — ele extrai e salva sozinho — ou (2) preencha no ✎ dados do card. O que faltar sai como "preencher" na minuta.</p></div>'}
+  var db=MODE==='db';
+  var campos=CFG_CAMPOS.map(function(c){return '<div><label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 4px">'+c[1]+'</label><input id="cfg-'+c[0]+'" value="'+((CFG[c[0]]||'').replace(/"/g,'&quot;'))+'" '+(db?'':'disabled')+' style="width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:13.5px;font-family:var(--sans);color:var(--ink);background:var(--surface)"></div>'}).join('');
+  return '<div class="painel" style="max-width:640px"><h2>Meus dados — quem assina os contratos</h2><p style="font-size:13px;color:var(--muted);margin:0 0 6px">Preencha uma vez e todo contrato gerado pelo /contrato já sai com os seus dados de CONTRATADO(A) completos. Fica salvo no prospector-config.json, no seu computador.</p>'+campos+'<div style="margin-top:18px;display:flex;gap:10px;align-items:center"><button '+(db?'':'disabled')+' onclick="salvarCfg()" style="border:0;border-radius:10px;padding:11px 22px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff">Salvar meus dados</button><span id="cfg-ok" style="color:var(--ok);font-weight:700;font-size:13px;display:none">salvo ✓</span>'+(db?'':'<span style="color:var(--warn);font-size:12.5px;font-weight:600">abra pelo iniciar-dashboard.bat para editar — ou dite os dados pro Claude no /setup</span>')+'</div></div>'+
+  '<div class="painel" style="max-width:640px"><h2>Configurações do Deploy (Vercel)</h2><p style="font-size:13px;color:var(--muted);margin:0 0 6px">O plugin utiliza a Vercel CLI local autenticada no seu computador para publicar demonstrações e vincular domínios próprios.</p>'+[['usuario','Usuário Vercel','text'],['projetoBase','Projeto Base Vercel (padrão: prospector-sites)','text']].map(function(c){return '<div><label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 4px">'+c[1]+'</label><input id="vc-'+c[0]+'" type="'+c[2]+'" value="'+((VC[c[0]]||(c[0]==='projetoBase'?'prospector-sites':'')).replace(/"/g,'&quot;'))+'" '+(db?'':'disabled')+' style="width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:14px;font-family:var(--sans);background:'+(db?'var(--white)':'#f0ede4')+'"></div>'}).join('')+'<div style="margin-top:18px;display:flex;gap:10px;align-items:center"><button '+(db?'':'disabled')+' onclick="salvarVC()" style="border:0;border-radius:10px;padding:11px 22px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff">Salvar Vercel</button><span id="vc-ok" style="color:var(--ok);font-weight:700;font-size:13px;display:none">salvo ✓</span>'+(db?(VC.usuario?'<span style="color:var(--ok);font-size:12.5px;font-weight:600">✓ CLI Vercel Ativa (Usuário: '+VC.usuario+')</span>':'<span style="color:var(--warn);font-size:12.5px;font-weight:600">insira o usuário ativo após logar no terminal (`vercel login`)</span>'):'<span style="color:var(--warn);font-size:12.5px;font-weight:600">abra pelo iniciar-dashboard.bat para editar</span>')+'</div></div>'+
+  '<div class="painel" style="max-width:640px"><h2>E os dados do cliente?</h2><p style="font-size:13px;color:var(--muted);margin:0">CPF/CNPJ e endereço do cliente entram quando ele fechar: peça pelo WhatsApp e (1) cole a resposta pro Claude no /contrato — ele extrai e salva sozinho — ou (2) preencha no ✎ dados do card. O que faltar sai como "preencher" na minuta.</p></div>'}
 function salvarCfg(){var body={};CFG_CAMPOS.forEach(function(c){body[c[0]]=document.getElementById('cfg-'+c[0]).value||''});
- fetch('/api/config',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({contratante:body})}).then(function(){CFG=body;var ok=document.getElementById('cfg-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none'},2000)})}
-function salvarHG(){var body={};['usuario','dominio','servidor','pastaBase','senha'].forEach(function(k){var el=document.getElementById('hg-'+k);if(el)body[k]=el.value||''});
- fetch('/api/config',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({hostgator:body})}).then(function(){if(body.senha)HG.senhaDefinida=true;['usuario','dominio','servidor','pastaBase'].forEach(function(k){if(body[k]!==undefined)HG[k]=body[k]});var ok=document.getElementById('hg-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none';render()},1200)})}
+  fetch('/api/config',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({contratante:body})}).then(function(){CFG=body;var ok=document.getElementById('cfg-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none'},2000)})}
+function salvarVC(){var body={};['usuario','projetoBase'].forEach(function(k){var el=document.getElementById('vc-'+k);if(el)body[k]=el.value||''});
+  fetch('/api/config',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({vercel:body})}).then(function(){['usuario','projetoBase'].forEach(function(k){if(body[k]!==undefined)VC[k]=body[k]});var ok=document.getElementById('vc-ok');ok.style.display='inline';setTimeout(function(){ok.style.display='none';render()},1200)})}
 function ordenar(c){if(c==='x')return;if(sortCol===c)sortAsc=!sortAsc;else{sortCol=c;sortAsc=true}pag=1;render()}
-var cmpSel=null;var HG={};
+var cmpSel=null;var VC={};
 function vComparador(){var ls=fil().filter(function(l){return l.slug&&['redesenhado','publicado','proposta','respondeu','fechado'].indexOf(l.status)>=0});
  if(!ls.length)return '<div class="painel"><div class="vazio">Sem sites redesenhados ainda — rode /redesenhar no Claude e o antes/depois aparece aqui.</div></div>';
  if(!cmpSel||!ls.some(function(l){return l.slug===cmpSel}))cmpSel=ls[0].slug;
  var l=ls.filter(function(x){return x.slug===cmpSel})[0];
  var antiga=l.siteAntigo?((l.siteAntigo.indexOf('http')===0?l.siteAntigo:'https://'+l.siteAntigo)):null;
- var nova='sites/'+l.slug+'/'+l.slug+'.html';
+ var nova='clientes_gerados/'+l.slug+'/index.html';
  return '<div class="cmp-tabs">'+ls.map(function(x){return '<button class="'+(x.slug===cmpSel?'on':'')+'" onclick="cmpSel=\''+x.slug+'\';render()">'+x.nome+'</button>'}).join('')+'</div>'
  +'<div class="cmp-grid"><div class="cmp-col"><div class="cab antes">Antes — site atual'+(antiga?' · <a href="'+antiga+'" target="_blank" style="color:inherit">abrir ↗</a>':'')+'</div>'+(antiga?'<iframe src="'+antiga+'" loading="lazy"></iframe>':'<div class="vazio" style="padding:30px">Sem URL do site antigo registrada.</div>')+'</div>'
  +'<div class="cmp-col"><div class="cab depois">Depois — nova versão · <a href="'+nova+'" target="_blank" style="color:inherit">abrir ↗</a></div><iframe src="'+nova+'"></iframe></div></div>'

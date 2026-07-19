@@ -1,0 +1,32 @@
+# SQLite local databases
+*.db
+prospector.db
+
+# Config and credentials
+prospector-config.json
+leads.md
+pending_deploys.txt
+
+# Generated client directories
+clientes_gerados/
+sites/
+comparar.html
+backup_hostgator/
+
+# Local execution zip files
+*.zip
+
+# Python caches and local runtime files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+*log.txt

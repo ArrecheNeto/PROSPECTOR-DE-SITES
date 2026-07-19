@@ -1,10 +1,10 @@
 {
   "name": "arrecheneto-plugins",
   "owner": {
-    "name": "Helio Arreche"
+    "name": "KeinDev"
   },
   "metadata": {
-    "description": "Plugins de IA para negócios do Helio Arreche",
+    "description": "Plugins de IA para negócios do KeinDev",
     "version": "2.1.0",
     "autoUpdate": true
   },
@@ -14,13 +14,13 @@
       "source": "./prospector-de-sites",
       "description": "Prospecção semi-automática com CRM local: encontra negócios bem avaliados com sites ruins no Google Maps, redesenha as páginas com estética premium (editor visual + comparador antes/depois), publica na HostGator sozinho (publicador automático + HTTPS), envia proposta anti-spam com página-capa personalizada via Gmail, faz follow-up, lê as respostas e gera contrato em Word travado — tudo administrado num dashboard local com kanban e financeiro. Comece pelo /setup.",
       "author": {
-        "name": "Helio Arreche"
+        "name": "KeinDev"
       },
       "keywords": [
         "prospeccao",
         "landing-page",
         "redesign",
-        "hostgator",
+        "vercelcli",
         "google-maps",
         "gmail",
         "crm",

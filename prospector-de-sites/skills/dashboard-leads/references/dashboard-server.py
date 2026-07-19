@@ -62,10 +62,10 @@ class App(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.split('?')[0] == '/api/config':
             cfg = ler_config()
-            hg = dict(cfg.get('hostgator', {}))
-            hg['senhaDefinida'] = bool(hg.get('senha'))
-            hg.pop('senha', None)  # a senha NUNCA sai do arquivo
-            return self._json(200, {'contratante': cfg.get('contratante', {}), 'hostgator': hg})
+            return self._json(200, {
+                'contratante': cfg.get('contratante', {}),
+                'vercel': cfg.get('vercel', {})
+            })
         if self.path.split('?')[0] == '/api/leads':
             c = conexao(); c.row_factory = sqlite3.Row
             rows = [dict(r) for r in c.execute('SELECT * FROM leads').fetchall()]; c.close()
@@ -73,34 +73,68 @@ class App(SimpleHTTPRequestHandler):
         if self.path in ('/', ''):
             self.path = '/dashboard.html'
         return SimpleHTTPRequestHandler.do_GET(self)
+
     def do_POST(self):
         if self.path.split('?')[0] == '/api/leads':
             l = self._corpo(); c = conexao()
             c.execute('INSERT OR REPLACE INTO leads (%s) VALUES (%s)' % (','.join(CAMPOS), ','.join('?'*len(CAMPOS))),
                       [l.get(k) for k in CAMPOS])
             c.commit(); c.close(); return self._json(200, {'ok': True})
+        
+        partes = self.path.split('?')[0].split('/')
+        # Rota para vincular domínio próprio na Vercel
+        if len(partes) == 5 and partes[1] == 'api' and partes[2] == 'leads' and partes[4] == 'vincular':
+            slug = partes[3]
+            corpo = self._corpo()
+            dominio = corpo.get('dominio', '').strip()
+            if not dominio:
+                return self._json(400, {'erro': 'Domínio é obrigatório'})
+            import subprocess
+            pasta_cliente = os.path.join(PASTA, 'clientes_gerados', slug)
+            if not os.path.exists(pasta_cliente):
+                os.makedirs(pasta_cliente, exist_ok=True)
+            try:
+                # Executa vercel domains add [dominio] --yes
+                res = subprocess.run(['npx', 'vercel', 'domains', 'add', dominio, '--yes'], cwd=pasta_cliente, capture_output=True, text=True, shell=True)
+                if res.returncode != 0:
+                    return self._json(500, {'erro': 'Erro no Vercel CLI: ' + res.stderr})
+                
+                # Gera instruções DNS simplificadas
+                is_sub = len(dominio.split('.')) > 2 and not dominio.split('.')[0].isdigit()
+                if is_sub:
+                    instrucoes = "Crie um registro CNAME apontando para cname.vercel-dns.com"
+                else:
+                    instrucoes = "Crie um registro A apontando para 76.76.21.21"
+                
+                # Atualiza a URL do lead no banco SQLite
+                c = conexao()
+                c.execute("UPDATE leads SET urlNova=?, atualizado=datetime('now','localtime') WHERE slug=?", ('https://' + dominio, slug))
+                c.commit(); c.close()
+                return self._json(200, {'ok': True, 'instrucoes': instrucoes, 'url': 'https://' + dominio})
+            except Exception as e:
+                return self._json(500, {'erro': 'Erro ao executar Vercel CLI: ' + str(e)})
+
         return self._json(404, {'erro': 'rota'})
+
     def do_PUT(self):
         if self.path.split('?')[0] == '/api/config':
             cfg = ler_config(); corpo = self._corpo()
-            if 'contratante' in corpo or 'hostgator' in corpo:
+            if 'contratante' in corpo or 'vercel' in corpo:
                 if 'contratante' in corpo:
                     ct = cfg.get('contratante', {})
                     ct.update({k: v for k, v in corpo['contratante'].items() if isinstance(v, str)})
                     cfg['contratante'] = ct
-                if 'hostgator' in corpo:
-                    hg = cfg.get('hostgator', {})
-                    for k, v in corpo['hostgator'].items():
-                        if not isinstance(v, str): continue
-                        if k == 'senha' and v == '': continue  # em branco = mantém a atual
-                        hg[k] = v
-                    cfg['hostgator'] = hg
-            else:  # compatibilidade: corpo plano = contratante
+                if 'vercel' in corpo:
+                    vc = cfg.get('vercel', {})
+                    vc.update({k: v for k, v in corpo['vercel'].items() if isinstance(v, str)})
+                    cfg['vercel'] = vc
+            else:  # compatibilidade
                 ct = cfg.get('contratante', {})
                 ct.update({k: v for k, v in corpo.items() if isinstance(v, str)})
                 cfg['contratante'] = ct
             json.dump(cfg, open(CONFIG, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
             return self._json(200, {'ok': True})
+
         partes = self.path.split('?')[0].split('/')
         if len(partes) == 4 and partes[1] == 'api' and partes[2] == 'leads':
             slug, ch = partes[3], self._corpo()
@@ -112,12 +146,14 @@ class App(SimpleHTTPRequestHandler):
                 c.commit(); c.close()
             return self._json(200, {'ok': True})
         return self._json(404, {'erro': 'rota'})
+
     def do_DELETE(self):
         partes = self.path.split('?')[0].split('/')
         if len(partes) == 4 and partes[1] == 'api' and partes[2] == 'leads':
             c = conexao(); c.execute('DELETE FROM leads WHERE slug=?', (partes[3],)); c.commit(); c.close()
             return self._json(200, {'ok': True})
         return self._json(404, {'erro': 'rota'})
+
     def log_message(self, *a): pass
 
 if __name__ == '__main__':

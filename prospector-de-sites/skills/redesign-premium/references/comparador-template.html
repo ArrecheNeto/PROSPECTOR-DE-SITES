@@ -43,7 +43,7 @@
     <div id="newwrap"></div>
   </div>
 </div>
-<p class="hint">Dica: para editar uma página, abra o arquivo <b>[cliente]-editor.html</b> na pasta sites/[cliente]/.</p>
+<p class="hint">Dica: para editar uma página, abra o arquivo <b>index-editor.html</b> na pasta clientes_gerados/[cliente]/.</p>
 <script>
 var CLIENTES=__CLIENTES__;
 var tabs=document.getElementById('tabs');
@@ -55,7 +55,7 @@ CLIENTES.forEach(function(c,i){
 function mostra(c){
   var ow=document.getElementById('oldwrap'),nw=document.getElementById('newwrap');
   var ol=document.getElementById('oldlink'),nl=document.getElementById('newlink');
-  var novo='sites/'+c.slug+'/'+c.slug+'.html';
+  var novo='clientes_gerados/'+c.slug+'/index.html';
   nw.innerHTML='<iframe src="'+novo+'"></iframe>';nl.href=novo;
   if(c.old){ow.innerHTML='<iframe src="'+c.old+'"></iframe>';ol.href=c.old;ol.style.display='inline'}
   else{ow.innerHTML='<div class="empty"><strong>Sem site para comparar</strong><span>'+(c.motivo||'')+'</span></div>';ol.style.display='none'}
@@ -70,5 +70,5 @@ FORMATO DO ARRAY __CLIENTES__ (JSON):
   {"nome":"Nome do Cliente","slug":"slug-do-cliente","old":"https://siteantigo.com.br/"},
   {"nome":"Cliente Sem Site","slug":"outro-slug","old":null,"motivo":"Site fora do ar"}
 ]
-Regras: novos clientes ENTRAM no array existente (ler o comparar.html atual e mesclar, nunca sobrescrever perdendo clientes antigos). Slug deve bater com a pasta sites/[slug]/[slug].html.
+Regras: novos clientes ENTRAM no array existente (ler o comparar.html atual e mesclar, nunca sobrescrever perdendo clientes antigos). Slug deve bater com a pasta clientes_gerados/[slug]/index.html.
 -->
